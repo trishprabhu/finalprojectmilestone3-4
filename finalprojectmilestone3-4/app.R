@@ -4,12 +4,12 @@ library(sentimentr)
 
 # Read in Trump Twitter data:
 
-trumptweets <- read_csv("finalprojectmilestone3-4/data/Trump_tweets (1).csv")
+trumptweets <- read_csv("data/Trump_tweets (1).csv")
 summary(trumptweets)
 
 # Read in Hillary Twitter data:
 
-hillarytweets <- read_csv("finalprojectmilestone3-4/data/hillarytweets.csv")
+hillarytweets <- read_csv("data/hillarytweets.csv")
 summary(hillarytweets)
 
 # Sentiment values:
@@ -33,7 +33,7 @@ ui <- navbarPage(
                                       label = "Number of observations to view:",
                                       value = 10),
                          sliderInput("obs", "Number of observations  to view:",
-                                         min = 0, max = 500, value = 50
+                                         min = 0, max = 300, value = 30
                              )),
                      mainPanel(
                          verbatimTextOutput("summary"),
@@ -54,7 +54,7 @@ ui <- navbarPage(
              the Tech Science pathway. 
              You can reach me at trishaprabhu@college.harvard.edu."),
              a("Visit the GitHub repo for this project here.", 
-               href = "https://github.com/trishprabhu/finalprojectmilestones")
+    href = "https://github.com/trishprabhu/finalprojectmilestone3-4/tree/main")
     ))
 
 # Define server logic:
