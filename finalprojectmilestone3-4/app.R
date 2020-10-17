@@ -1,23 +1,24 @@
+# Download relevant libraries, including the sentimentr library, so I can
+# complete sentiment analysis!
+
 library(shiny)
 library(readr)
 library(sentimentr)
 
-# Read in Donald Trump Twitter data:
-
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
-
-# Read in Hillary Clinton Twitter data:
 
 hillarytweets <- read_csv("hillarytweets.csv")
 summary(hillarytweets)
 
-# Sentiment values:
+# Rather than calculate sentiment scores for all of the Tweets (thousands of
+# observations, which would substantially slow things down, I took a subset
+# of observations).
 
 trump_sentiment_scores <- sentiment(trumptweets$text[1:100])
 hillary_sentiment_scores <- sentiment(hillarytweets$text[1:100])
 
-# Define UI:
+# UI definition:
 
 ui <- navbarPage(
     "Trisha's Final Project Milestones",
@@ -33,9 +34,14 @@ ui <- navbarPage(
                          numericInput(inputId = "obs",
                                       label = "Number of observations to view:",
                                       value = 10),
-                         sliderInput("obs", "Slide to the number of
-                                     observations to view:",
-                                         min = 0, max = 300, value = 30
+                         
+# Originally, I just had a numericInput() box; at Dan's suggestion, I added a
+# slider, so folks who visit my Shiny App can more easily look at the desired
+# number of observations.
+                         
+                         sliderInput("obs", 
+                         "Slide to the number of observations to view:",
+                         min = 0, max = 300, value = 30
                              )),
                      mainPanel(
                          verbatimTextOutput("summary"),
@@ -58,9 +64,15 @@ ui <- navbarPage(
              In doing this, I plan to focus in more exclusively on Donald
              Trump (as opposed to Hillary Clinton), and to pull/clean data
              from Twitter's API."), 
-             a("See the data currently in use by visiting this Dropbox link.", 
+             a("See the data currently in use by visiting this Dropbox link.",
+               
+# At Dan's suggestion, I uploaded my datasets (which were large, and making it
+# impossible for me to commit my work to GitHub) to Dropbox. Also, Dan, 
+# apologies -- the link below was too long to fit within the 80 character code 
+# line limit!
+               
                href = "https://www.dropbox.com/sh/5azksa5cvrsi9cs/AADvM-p9h8Sqf4oYzcgaMWXda?dl=0")
-    ),
+             ),
     tabPanel("About", 
              titlePanel("About"),
              h3("Project Background and Motivations"),
@@ -79,25 +91,28 @@ ui <- navbarPage(
 
 server <- function(input, output) {
     
-    # Return the requested data-set ----
     datasetInput <- reactive({
         switch(input$dataset,
+               
+# As I learned, the values below correspond to the choices argument above -- 
+# important to ensure that everything stays consistent, or your code will break
+# (as mine did, until I figured this out)!
+               
                "Hillary Clinton" = hillary_sentiment_scores,
                "Donald Trump" = trump_sentiment_scores)
     })
     
-    # Generate a summary of the dataset ----
     output$summary <- renderPrint({
         dataset <- datasetInput()
         summary(dataset)
     })
     
-    # Show the first "n" observations ----
     output$view <- renderTable({
         head(datasetInput(), n = input$obs)
     })
     
 }
 
-# Run the application 
+# Run the application:
+
 shinyApp(ui = ui, server = server)
