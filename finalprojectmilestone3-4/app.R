@@ -46,7 +46,16 @@ ui <- navbarPage(
                      mainPanel(
                          verbatimTextOutput("summary"),
                          tableOutput("view"),
-                     )))),
+                     )),
+                sidebarPanel(
+                    sliderInput(inputId = "bins",
+                                label = "Number of bins:",
+                                min = 1,
+                                max = 50,
+                                value = 30)),
+                    mainPanel(
+                        plotOutput(outputId = "sentPlot"))
+)),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("09/16 Status Report: The data used in this project currently 
@@ -109,6 +118,19 @@ server <- function(input, output) {
     
     output$view <- renderTable({
         head(datasetInput(), n = input$obs)
+    })
+    
+    output$sentPlot <- renderPlot({
+        
+        x <- hillary_sentiment_scores$sentiment
+        y <- trump_sentiment_scores$sentiment
+        binshillary <- seq(min(x), max(x), length.out = input$bins + 1)
+        binstrump <- seq(min(y), max(y), length.out = input$bins + 1)
+        
+        hist(x, breaks = bins, col = "#75AADB", border = "white",
+             xlab = "Sentiment",
+             main = "Histogram of Sentiment Expressed In Tweets")
+        
     })
     
 }
