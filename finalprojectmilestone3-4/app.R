@@ -4,6 +4,8 @@
 library(shiny)
 library(readr)
 library(sentimentr)
+library(tidyverse)
+library(ggthemes)
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
@@ -47,37 +49,22 @@ ui <- navbarPage(
                          verbatimTextOutput("summary"),
                          tableOutput("view"),
                      )),
-                sidebarPanel(
-                    sliderInput(inputId = "binshillary",
-                                label = "Number of bins:",
-                                min = 1,
-                                max = 50,
-                                value = 10),
-                    sliderInput(inputId = "binstrump",
-                                label = "Number of bins:",
-                                min = 1,
-                                max = 50,
-                                value = 10)),
+                    sidebarPanel(
+                        p("Analysis: Here, we look at the sentiment distribution 
+                        of Trump and Clinton's Tweets. On average, they are
+                        both relatively neutral on Twitter, but it's clear:
+                        Trump has much more variation in his Tweets; by 
+                        comparison, Clinton never reaches the most extreme 
+                        sentiment scores (1 and -1).")
+                    ),
                     mainPanel(
                         plotOutput(outputId = "hillPlot"),
+                        
                         plotOutput(outputId = "donPlot")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
-             p("09/16 Status Report: The data used in this project currently 
-             consists of two datasets -- Donald Trump's Tweets, from 07/13/20 to 
-             10/13/20, and Hillary Clinton's Tweets, from 08/03/16 to 11/03/16 
-             (both meant to represent either 3 months before their respective
-             Presidential elections/3 months before the present date). I've
-             currently run a sentiment analysis on a subset of observations;
-             in the future, I plan to both 1) run additional analyses with
-             regards to sentiment (e.g. how does sentiment vary with time
-             (closer to the election)?) and 2) look at other elements of the
-             Tweets, from their characteristics (does Donald Trump Retweet
-             more, or write his own Tweets more?) to their correlation
-             with other data of interest (such as Trump's approval rating).
-             In doing this, I plan to focus in more exclusively on Donald
-             Trump (as opposed to Hillary Clinton), and to pull/clean data
-             from Twitter's API."), 
+             p("09/23 Status Report: Building off of my work from last week,
+               this week, I built a visualization (2 histograms) of "), 
              a("See the data currently in use by visiting this Dropbox link.",
                
 # At Dan's suggestion, I uploaded my datasets (which were large, and making it
@@ -125,26 +112,40 @@ server <- function(input, output) {
         head(datasetInput(), n = input$obs)
     })
     
+    hillsentimentmean <- mean(hillary_sentiment_scores$sentiment)
+    
     output$hillPlot <- renderPlot({
         
-        x <- hillary_sentiment_scores$sentiment
-        binshillary <- seq(min(x), 
-                           max(x), 
-                           length.out = input$binshillary + 1)
-        hist(x, breaks = binshillary, col = "#75AADB", border = "white",
-             xlab = "Sentiment",
-             main = "Histogram of Sentiment Expressed In Clinton's Tweets")
+        hillary_sentiment_scores %>%
+            ggplot(aes(x = sentiment)) +
+            geom_histogram(bins = 10, color = "white") +
+            labs(x = "Sentiment",
+                 y = "Count",
+                 subtitle = "Overall, Hillary is very neutral in her Tweets",
+                 title = "Sentiment Expressed In Hillary's Tweets",
+                 caption = "Source: Trump Twitter Archive") +
+            geom_vline(xintercept = hillsentimentmean, 
+                       linetype = "dashed") +
+            theme_bw()
+        
     })
+    
+    donsentimentmean <- mean(trump_sentiment_scores$sentiment)
     
     output$donPlot <- renderPlot({
         
-        y <- trump_sentiment_scores$sentiment
-        binstrump <- seq(min(y), 
-                         max(y), 
-                         length.out = input$binstrump + 1)
-        hist(y, breaks = binstrump, col = "#75AADB", border = "white",
-             xlab = "Sentiment",
-             main = "Histogram of Sentiment Expressed In Trump's Tweets")
+        trump_sentiment_scores %>%
+            ggplot(aes(x = sentiment)) +
+              geom_histogram(bins = 10, color = "white") +
+              labs(x = "Sentiment",
+                   y = "Count",
+                   subtitle = "On average, Trump is too, but with much more variation -- both positive and negative",
+                   title = "Sentiment Expressed In Trump's Tweets",
+                   caption = "Source: Trump Twitter Archive") +
+            geom_vline(xintercept = donsentimentmean, 
+                       linetype = "dashed",
+                       label = "0.01336323") +
+            theme_bw()
         
     })
     
