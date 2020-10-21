@@ -48,14 +48,19 @@ ui <- navbarPage(
                          tableOutput("view"),
                      )),
                 sidebarPanel(
-                    sliderInput(inputId = "bins",
+                    sliderInput(inputId = "binshillary",
                                 label = "Number of bins:",
                                 min = 1,
                                 max = 50,
-                                value = 30)),
+                                value = 10),
+                    sliderInput(inputId = "binstrump",
+                                label = "Number of bins:",
+                                min = 1,
+                                max = 50,
+                                value = 10)),
                     mainPanel(
-                        plotOutput(outputId = "sentPlot"))
-)),
+                        plotOutput(outputId = "hillPlot"),
+                        plotOutput(outputId = "donPlot")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("09/16 Status Report: The data used in this project currently 
@@ -120,16 +125,26 @@ server <- function(input, output) {
         head(datasetInput(), n = input$obs)
     })
     
-    output$sentPlot <- renderPlot({
+    output$hillPlot <- renderPlot({
         
         x <- hillary_sentiment_scores$sentiment
-        y <- trump_sentiment_scores$sentiment
-        binshillary <- seq(min(x), max(x), length.out = input$bins + 1)
-        binstrump <- seq(min(y), max(y), length.out = input$bins + 1)
-        
-        hist(x, breaks = bins, col = "#75AADB", border = "white",
+        binshillary <- seq(min(x), 
+                           max(x), 
+                           length.out = input$binshillary + 1)
+        hist(x, breaks = binshillary, col = "#75AADB", border = "white",
              xlab = "Sentiment",
-             main = "Histogram of Sentiment Expressed In Tweets")
+             main = "Histogram of Sentiment Expressed In Clinton's Tweets")
+    })
+    
+    output$donPlot <- renderPlot({
+        
+        y <- trump_sentiment_scores$sentiment
+        binstrump <- seq(min(y), 
+                         max(y), 
+                         length.out = input$binstrump + 1)
+        hist(y, breaks = binstrump, col = "#75AADB", border = "white",
+             xlab = "Sentiment",
+             main = "Histogram of Sentiment Expressed In Trump's Tweets")
         
     })
     
