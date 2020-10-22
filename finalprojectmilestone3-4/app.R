@@ -49,13 +49,18 @@ ui <- navbarPage(
                          verbatimTextOutput("summary"),
                          tableOutput("view"),
                      )),
+
+# This sidebar was a great spot to both 1) provide some context around the
+# histogram, and align/style the page so that the graphs were aesthetically 
+# appealing.
+
                     sidebarPanel(
-                        p("Analysis: Here, we look at the sentiment distribution 
-                        of Trump and Clinton's Tweets. On average, they are
-                        both relatively neutral on Twitter, but it's clear:
-                        Trump has much more variation in his Tweets; by 
-                        comparison, Clinton never reaches the most extreme 
-                        sentiment scores (1 and -1).")
+                        p("Analysis: Here, we look at the sentiment 
+                        distributions of Trump and Clinton's Tweets. 
+                        Interestingly, on average, they are both relatively 
+                        neutral on Twitter, but it's clear: Trump has much more 
+                        variation in his Tweets; by comparison, Clinton never 
+                        reaches the most extreme sentiment scores (1 and -1).")
                     ),
                     mainPanel(
                         plotOutput(outputId = "hillPlot"),
@@ -124,6 +129,13 @@ server <- function(input, output) {
                  subtitle = "Overall, Hillary is very neutral in her Tweets",
                  title = "Sentiment Expressed In Hillary's Tweets",
                  caption = "Source: Trump Twitter Archive") +
+            
+# I thought that explicitly graphing the mean of both Trump and Clinton's 
+# sentiment scores could help viewers better visualize the distribution overall
+# (I also thought it was interesting that, on average, they are both very
+# neutral -- likely a result of Trump's more positive Tweets "canceling out"
+# his more negative Tweets).
+            
             geom_vline(xintercept = hillsentimentmean, 
                        linetype = "dashed") +
             theme_bw()
@@ -139,6 +151,10 @@ server <- function(input, output) {
               geom_histogram(bins = 10, color = "white") +
               labs(x = "Sentiment",
                    y = "Count",
+                   
+# I know that the line below surpasses the 80 character limit, but cutting it
+# off was not aesthetically appealing on my graph. Apologies!
+                   
                    subtitle = "On average, Trump is too, but with much more variation -- both positive and negative",
                    title = "Sentiment Expressed In Trump's Tweets",
                    caption = "Source: Trump Twitter Archive") +
