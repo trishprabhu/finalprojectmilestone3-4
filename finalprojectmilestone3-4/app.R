@@ -69,7 +69,25 @@ ui <- navbarPage(
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("09/23 Status Report: Building off of my work from last week,
-               this week, I built a visualization (2 histograms) of "), 
+               this week, I built visualizations (2 histograms) of the 
+               sentiment distributions of Trump and Clinton's Tweets; I also
+               created a mini-panel with some brief analysis. This was a good
+               exercise in using ggplot() in Shiny; I feel much more 
+               comfortable rendering plots now! With regards to my data, I'm 
+               using the same data -- Donald Trump's Tweets, from 07/13/20 to 
+               10/13/20, and Hillary Clinton's Tweets, from 08/03/16 to 
+               11/03/16, both derived from The Trump Twitter Archive --
+               but my goal is to pull data from Twitter's API (my developer 
+               account was approved!) for the next milestone. Also on the
+               data front, I found a new dataset -- Trump's approval rating
+               over the course of his presidency -- which I plan to analyze
+               in conjunction with his sentiment expressed on Twitter (this
+               dataset is now in the Dropbox link below). Looking ahead, as
+               I discussed in Recitation this week, I'm planning to pivot this
+               project to be more language-focused, and also diving into
+               Donald Trump's language off of Twitter -- by looking at the
+               speech level associated with his words, I hope to better 
+               understand just how often he stays on script during a speech."), 
              a("See the data currently in use by visiting this Dropbox link.",
                
 # At Dan's suggestion, I uploaded my datasets (which were large, and making it
