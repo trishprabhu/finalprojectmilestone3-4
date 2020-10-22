@@ -55,11 +55,11 @@ ui <- navbarPage(
 # appealing.
 
                     sidebarPanel(
-                        p("Analysis: Here, I visualize the sentiment 
-                        distributions (above) of Trump and Clinton's Tweets. 
+                        p("Analysis: Here, I visualize the distributions
+                        of Trump and Clinton's Tweets' sentiment scores (above). 
                         On average, they are both relatively neutral on Twitter, 
                         but it's clear: Trump's Tweets see much more variation
-                        in sentiment; by comparison, Clinton never reaches the 
+                        in sentiment; by comparison, Clinton rarely reaches the 
                         most extreme sentiment scores (1 and -1).")
                     ),
                     mainPanel(
@@ -100,8 +100,8 @@ ui <- navbarPage(
     tabPanel("About", 
              titlePanel("About"),
              h3("Project Background and Motivations"),
-             p("Hello! This is a project exploring Donald Trump's Tweets,
-               and what they can tell us about his Presidency, politics,
+             p("Hello! This is a project exploring Donald Trump's language,
+               and what it can tell us about his Presidency, politics,
                and the world at large."),
              h3("About Me"),
              p("My name is Trisha Prabhu and I study Government, on
@@ -142,10 +142,10 @@ server <- function(input, output) {
         hillary_sentiment_scores %>%
             ggplot(aes(x = sentiment)) +
             geom_histogram(bins = 10, color = "white") +
-            labs(x = "Sentiment",
+            labs(x = "Sentiment Score",
                  y = "Count",
                  subtitle = "Overall, Hillary is very neutral in her Tweets",
-                 title = "Sentiment Expressed In Hillary's Tweets",
+                 title = "Sentiment Expressed In Clinton's Tweets",
                  caption = "Source: Trump Twitter Archive") +
             
 # I thought that explicitly graphing the mean of both Trump and Clinton's 
@@ -167,7 +167,7 @@ server <- function(input, output) {
         trump_sentiment_scores %>%
             ggplot(aes(x = sentiment)) +
               geom_histogram(bins = 10, color = "white") +
-              labs(x = "Sentiment",
+              labs(x = "Sentiment Score",
                    y = "Count",
                    
 # I know that the line below surpasses the 80 character limit, but cutting it
