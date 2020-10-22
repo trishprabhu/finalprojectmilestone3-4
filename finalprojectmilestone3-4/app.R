@@ -55,12 +55,12 @@ ui <- navbarPage(
 # appealing.
 
                     sidebarPanel(
-                        p("Analysis: Here, we look at the sentiment 
-                        distributions of Trump and Clinton's Tweets. 
-                        Interestingly, on average, they are both relatively 
-                        neutral on Twitter, but it's clear: Trump has much more 
-                        variation in his Tweets; by comparison, Clinton never 
-                        reaches the most extreme sentiment scores (1 and -1).")
+                        p("Analysis: Here, I visualize the sentiment 
+                        distributions (above) of Trump and Clinton's Tweets. 
+                        On average, they are both relatively neutral on Twitter, 
+                        but it's clear: Trump's Tweets see much more variation
+                        in sentiment; by comparison, Clinton never reaches the 
+                        most extreme sentiment scores (1 and -1).")
                     ),
                     mainPanel(
                         plotOutput(outputId = "hillPlot"),
@@ -69,8 +69,8 @@ ui <- navbarPage(
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("09/23 Status Report: Building off of my work from last week,
-               this week, I built visualizations (2 histograms) of the 
-               sentiment distributions of Trump and Clinton's Tweets; I also
+               this week, I visualized (via 2 histograms) the distributions of 
+               Trump and Clinton's Tweets' sentiment scores. I also
                created a mini-panel with some brief analysis. This was a good
                exercise in using ggplot() in Shiny; I feel much more 
                comfortable rendering plots now! With regards to my data, I'm 
@@ -81,13 +81,13 @@ ui <- navbarPage(
                account was approved!) for the next milestone. Also on the
                data front, I found a new dataset -- Trump's approval rating
                over the course of his presidency -- which I plan to analyze
-               in conjunction with his sentiment expressed on Twitter (this
-               dataset is now in the Dropbox link below). Looking ahead, as
-               I discussed in Recitation this week, I'm planning to pivot this
-               project to be more language-focused, and also diving into
-               Donald Trump's language off of Twitter -- by looking at the
-               speech level associated with his words, I hope to better 
-               understand just how often he stays on script during a speech."), 
+               in conjunction with how his sentiment on Twitter has evolved
+               during the same period (this dataset is now in the Dropbox link 
+               below). Looking ahead (as I discussed in Recitation this week!), 
+               I'm planning to pivot, and further explore Donald Trump's 
+               language off of Twitter -- by looking at the speech level 
+               associated with his remarks, I hope to better  understand just 
+               how often he stays on script during a speech."), 
              a("See the data currently in use by visiting this Dropbox link.",
                
 # At Dan's suggestion, I uploaded my datasets (which were large, and making it
