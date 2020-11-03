@@ -8,6 +8,7 @@ library(tidyverse)
 library(ggthemes)
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
+View(trumptweets)
 summary(trumptweets)
 
 hillarytweets <- read_csv("hillarytweets.csv")
