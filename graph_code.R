@@ -30,8 +30,13 @@ graphtib <- inner_join(newtrumptib, senttib, by = "element_id")
 # Read in the approval_polllist dataset.
 
 approval_polllist <- read_csv("finalprojectmilestone3-4/approval_polllist.csv")
-View(approval_polllist)
 
+# Modify the dataset to only include the relevant time period.
+
+trump_approvals <- approval_polllist %>%
+  mutate(id = 1:15857) %>%
+  filter(id >= 15796)
+  
 # Create a vector of ending dates to iterate over.
 
 enddates <- unique(approval_polllist$enddate)
@@ -50,3 +55,5 @@ for (i in 1:n) {
   #Pull the approval polls from approval_pollist and put in trump_tweets
 }
 results
+
+
