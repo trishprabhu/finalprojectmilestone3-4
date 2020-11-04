@@ -1,6 +1,12 @@
 # Load the dplyr library.
 
 library(dplyr)
+library(sentimentr)
+
+# Read in the approval_polllist dataset.
+
+approval_polllist <- read_csv("finalprojectmilestone3-4/approval_polllist.csv")
+View(approval_polllist)
 
 # Create a vector of ending dates to iterate over.
 
@@ -23,14 +29,21 @@ trumptweets$newdates <- (as.Date(mdy_hms(trumptweets$created_at)))
 graphtibble <- trumptweets %>%
   select(text, newdates) %>%
   group_by(newdates) %>%
-  sample()
-  summarize(sentimentdate = sentiment(get_sentences(text)),
+  mutate(sentimentdate = map_dbl(text, 
+                                    ~ sentiment(get_sentences(.))),
             .groups = "drop") %>%
   mutate(sentimentdatemean = mean(sentimentdate$sentiment)) %>%
   select(newdates, sentimentdatemean) %>%
   slice_head(n = 1)
 
-graphtibble
+trump_ss <- trumptweets %>%
+  sentiment(get_sentences(text[1:100])) %>%
+  group_by(element_id) %>%
+  mutate(sentimentmeans = mean(sentiment, na.rm = TRUE))
+
+small_trump <- trumptweets$newdates[1:100]
+
+sentiment(get_sentences(trumptweets$text[1:100]))
 
 #For loop is below:
 
