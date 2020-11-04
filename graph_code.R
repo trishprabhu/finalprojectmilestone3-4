@@ -16,12 +16,14 @@ trumptweets$approvalpolls <- c()
 library(lubridate)
 trumptweets$newdates <- (as.Date(mdy_hms(trumptweets$created_at)))
 
-# (Attempt to) create a new tibble calculates a sentiment score for each date
-# in trumptweets.
+# (Attempt to) create a new tibble that calculates a sentiment score for each 
+# date in trumptweets (currently not working, because I'm not sure how to handle
+# the fact that there are multiple Tweets for each date.
 
 graphtibble <- trumptweets %>%
+  select(text, newdates) %>%
   group_by(newdates) %>%
-  head() %>% 
+  sample()
   summarize(sentimentdate = sentiment(get_sentences(text)),
             .groups = "drop") %>%
   mutate(sentimentdatemean = mean(sentimentdate$sentiment)) %>%
@@ -29,6 +31,8 @@ graphtibble <- trumptweets %>%
   slice_head(n = 1)
 
 graphtibble
+
+#For loop is below:
 
 n <- length(enddates)
 n
