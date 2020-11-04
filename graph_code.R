@@ -1,16 +1,23 @@
+library(dplyr)
 
+# Create a vector of ending dates to iterate over.
 enddates <- unique(approval_polllist$enddate)
-enddates
 
+#Create an empty column to deposit approval ratings in.
 trumptweets$approvalpolls <- c()
+
+library(lubridate)
+trumptweets$newdates <- (as.Date(mdy_hms(trumptweets$created_at)))
 View(trumptweets)
 
-trumptweets$created_at <- 
-  
-format(as.POSIXct(trumptweets$created_at,format='%m/%d/%Y %H:%M:%S'),
-       format='%m/%d/%Y')
+n <- length(enddates)
+n
 
-for (i in 1:length(enddates)) {
+results <- rep(NA, n)
+
+for (i in 1:n) {
+  results[i] <- approval_polllist$approve[i]
   #Pull the approval polls from approval_pollist and put in trump_tweets
 }
+results
 
