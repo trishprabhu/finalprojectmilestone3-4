@@ -44,13 +44,9 @@ n
 results <- rep(NA, n)
 
 for (i in 1:n) {
-  filter(approval_polllist$enddate == enddates[i]) %>%
-  results[i] <- mean(approval_polllist$approve)
+  step1 <- approval_polllist %>%
+    filter(enddate == enddates[i])
+  results[i] <- mean(step1$approve)
   #Pull the approval polls from approval_pollist and put in trump_tweets
 }
 results
-
-approval_polllist %>%
-  filter(enddate == enddates[1]) %>%
-  mean([, ])
-  
