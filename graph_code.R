@@ -1,4 +1,4 @@
-# Load the dplyr library.
+# Load the dplyr and sentimentr library.
 
 library(dplyr)
 library(sentimentr)
@@ -22,28 +22,20 @@ trumptweets$approvalpolls <- c()
 library(lubridate)
 trumptweets$newdates <- (as.Date(mdy_hms(trumptweets$created_at)))
 
-# (Attempt to) create a new tibble that calculates a sentiment score for each 
-# date in trumptweets (currently not working, because I'm not sure how to handle
-# the fact that there are multiple Tweets for each date.
-
-graphtibble <- trumptweets %>%
-  select(text, newdates) %>%
+newtrumptib <- trumptweets %>%
+  mutate(element_id = 1:2927) %>%
   group_by(newdates) %>%
-  mutate(sentimentdate = map_dbl(text, 
-                                    ~ sentiment(get_sentences(.))),
-            .groups = "drop") %>%
-  mutate(sentimentdatemean = mean(sentimentdate$sentiment)) %>%
-  select(newdates, sentimentdatemean) %>%
-  slice_head(n = 1)
+  select(text, newdates, element_id) %>%
+  head(., 100)
 
-trump_ss <- trumptweets %>%
-  sentiment(get_sentences(text[1:100])) %>%
+trump_ss <- sentiment(get_sentences(trumptweets$text[1:100])) 
+
+senttib <- trump_ss %>%
   group_by(element_id) %>%
-  mutate(sentimentmeans = mean(sentiment, na.rm = TRUE))
+  summarize(sentimentmeans = mean(sentiment, na.rm = TRUE),
+            .groups = "drop")
 
-small_trump <- trumptweets$newdates[1:100]
-
-sentiment(get_sentences(trumptweets$text[1:100]))
+graphtib <- inner_join(newtrumptib, senttib, by = "element_id")
 
 #For loop is below:
 
