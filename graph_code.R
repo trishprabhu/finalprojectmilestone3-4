@@ -1,14 +1,34 @@
+# Load the dplyr library.
+
 library(dplyr)
 
 # Create a vector of ending dates to iterate over.
+
 enddates <- unique(approval_polllist$enddate)
 
 #Create an empty column to deposit approval ratings in.
+
 trumptweets$approvalpolls <- c()
+
+# Load the lubridate library; use as.Date to create a new column with the
+# created_at values in MDY format.
 
 library(lubridate)
 trumptweets$newdates <- (as.Date(mdy_hms(trumptweets$created_at)))
-View(trumptweets)
+
+# (Attempt to) create a new tibble calculates a sentiment score for each date
+# in trumptweets.
+
+graphtibble <- trumptweets %>%
+  group_by(newdates) %>%
+  head() %>% 
+  summarize(sentimentdate = sentiment(get_sentences(text)),
+            .groups = "drop") %>%
+  mutate(sentimentdatemean = mean(sentimentdate$sentiment)) %>%
+  select(newdates, sentimentdatemean) %>%
+  slice_head(n = 1)
+
+graphtibble
 
 n <- length(enddates)
 n
@@ -20,4 +40,3 @@ for (i in 1:n) {
   #Pull the approval polls from approval_pollist and put in trump_tweets
 }
 results
-
