@@ -56,10 +56,14 @@ approval_polllist <- read_csv("finalprojectmilestone3-4/approval_polllist.csv")
 # Modify the dataset to only include the relevant time period (the time period
 # that corresponds with graphtib2).
 
-trump_approvals <- approval_polllist %>%
+trump_approvals_almost <- approval_polllist %>%
   mutate(id = 1:15857) %>%
-  filter(id >= 15796 & id <= 15851) %>%
-  #Remove Row #48!
+  filter(id >= 15796 & id <= 15851)
+  
+# But we need to make one last alteration (removing Row 48, which includes the
+# approval rating from a date not in the relevant time period).
+  
+trump_approvals <- trump_approvals_almost[-48, ]
   
 # Create a vector of ending dates to iterate over.
 
