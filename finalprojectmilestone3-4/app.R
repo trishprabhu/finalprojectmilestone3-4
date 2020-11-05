@@ -75,9 +75,10 @@ ui <- navbarPage(
                      correlated (as his approval rating increases, he becomes
                      increasingly negative on Twitter -- perhaps he feels
                      emboldened and vindicated?). One must be cautious in
-                     drawing any conclusions, though -- this is a relatively 
+                     drawing any conclusions, though -- not only is the
+                     relationship relatively weak, this is also a relatively 
                      short period of time; a longer period -- with more 
-                     datapoints -- would likely be more substantive. (Accordingly,
+                     datapoints -- would likely be more telling. (Accordingly,
                      that is something I'm aiming to work on for my next 
                      Milestone!")
                    ),
