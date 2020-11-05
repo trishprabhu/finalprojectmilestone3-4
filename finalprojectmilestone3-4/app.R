@@ -50,8 +50,8 @@ ui <- navbarPage(
                          tableOutput("view"),
                      )),
 
-# This sidebar was a great spot to both 1) provide some context around the
-# histogram, and align/style the page so that the graphs were aesthetically 
+# The sidebars were great spots to both 1) provide some context around the
+# graphics, and 2) align/style the page so that the graphs were aesthetically 
 # appealing.
 
                     sidebarPanel(
@@ -205,6 +205,10 @@ server <- function(input, output) {
         finalgraphtib %>%
             ggplot(aes(x = approval_ratings, y = meanofmeans)) +
             geom_point() +
+            
+# I know that the lines below surpasses the 80 character limit, but cutting them
+# off was not aesthetically appealing on my graph. Apologies!
+            
             labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/30 - 10/13",
                  subtitle = "Trump's approval ratings and sentiment scores seem to be weakly negatively correlated",
                  x = "Approval Rating",
