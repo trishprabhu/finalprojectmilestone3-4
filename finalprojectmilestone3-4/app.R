@@ -7,6 +7,8 @@ library(sentimentr)
 library(tidyverse)
 library(ggthemes)
 
+source('graph_code.R', local = TRUE)
+
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
 
