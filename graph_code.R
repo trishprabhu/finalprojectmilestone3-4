@@ -90,7 +90,8 @@ for (i in 1:n) {
   step1 <- trump_approvals %>%
     filter(enddate == enddates[i])
   results[i] <- mean(step1$approve)
-  # Pull the approval polls from approval_pollist (done!) and put in 
-  # graphtib2 (TBD!).
 }
 results
+
+finalgraphtib <- graphtib2 %>%
+  mutate(approval_ratings = results)
