@@ -95,12 +95,12 @@ ui <- navbarPage(
                learning how to troubleshoot/work with data that wasn't in
                the format I needed it to be -- I made extensive use of the
                lubridate, sentimentr, and dplyr libraries; I also brought in
-               for loops! With regards to the data I'm using, I'm still using
+               for loops! With regards to the data in use: I'm still using
                Donald Trump's Tweets, from 07/13/20 to 10/13/20 (source: the
                Trump Twitter Archive -- it's got everything I need, so I
                figured there was no need to use Twitter's API), as well as the
                dataset documenting Trump's approval ratings over the course
-               his presidency (both are still in the Dropbox link below!). 
+               his presidency (both csvs are still in the Dropbox link below!). 
                Looking ahead, for my next Milestone, I'm hoping to pivot a bit
                from Donald Trump's Twitter, and consider his language in other
                spaces (e.g. his speeches). By looking at the speech level 
