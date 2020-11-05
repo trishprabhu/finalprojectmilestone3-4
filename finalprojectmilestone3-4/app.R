@@ -82,8 +82,10 @@ ui <- navbarPage(
                      that is something I'm aiming to work on for my next 
                      Milestone!)")
                    ),
-                   mainPanel(
-                       plotOutput(outputId = "approvalSentiment")))),
+                  mainPanel(
+                      plotOutput(outputId = "approvalSentiment")),
+                  mainPanel(uiOutput("pdfview"))
+                )),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("11/06 Status Report: Building off of my work from last week,
@@ -199,6 +201,15 @@ server <- function(input, output) {
                        label = "0.01336323") +
             theme_bw()
         
+    })
+    
+    observe({
+        
+    output$pdfview <- renderUI({
+        tags$iframe(style = "height:600px; width:100%", 
+                    src = "finalprojectmilestone3-4/finalgraph.pdf")
+    })
+    
     })
     
     output$approvalSentiment <- renderPlot({
