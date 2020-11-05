@@ -84,11 +84,11 @@ ui <- navbarPage(
                    ),
                   mainPanel(
                       plotOutput(outputId = "approvalSentiment")),
-#                  mainPanel(
-#                     tabsetPanel(type = "tab",
-#                                 tabPanel("pdf", 
-#                                           tags$ifframe(style = "height:400px; width: 100%; scrolling = yes", 
-#                                                        src = "finalgraph.pdf"))))
+                  mainPanel(
+                      tabsetPanel(type = "tab",
+                                  tabPanel("pdf", 
+                                           tags$ifframe(style = "height:400px; width: 100%; scrolling = yes", 
+                                                        src = "finalgraph.pdf"))))
                 )),
     tabPanel("Discussion",
              titlePanel("About The Data"),
@@ -208,9 +208,9 @@ server <- function(input, output) {
     })
     
         
-#   output$newtabs <- renderUI({
+    output$newtabs <- renderUI({
         
-#    })
+    })
     
     
     output$approvalSentiment <- renderPlot({
