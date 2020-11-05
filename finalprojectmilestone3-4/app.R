@@ -65,7 +65,12 @@ ui <- navbarPage(
                     mainPanel(
                         plotOutput(outputId = "hillPlot"),
                         
-                        plotOutput(outputId = "donPlot")))),
+                        plotOutput(outputId = "donPlot")),
+                   sidebarPanel(
+                   p("Analysis: Here, I look at ")
+                   ),
+                   mainPanel(
+                       plotOutput(outputId = "approvalSentiment")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("09/23 Status Report: Building off of my work from last week,
@@ -179,6 +184,21 @@ server <- function(input, output) {
             geom_vline(xintercept = donsentimentmean, 
                        linetype = "dashed",
                        label = "0.01336323") +
+            theme_bw()
+        
+    })
+    
+    output$approvalSentiment <- renderPlot({
+        
+        finalgraphtib %>%
+            ggplot(aes(x = approval_ratings, y = meanofmeans)) +
+            geom_point() +
+            labs(title = "Trump's approval rating and daily sentiment score on Twitter, 09/30 - 10/13",
+                 subtitle = "Trump's approval ratings and sentiment scores do not seem to be correlated",
+                 x = "Approval Rating",
+                 y = "Tweet Sentiment Score",
+                 caption = "Source: Trump Twitter Archive") +
+            scale_x_continuous(labels = scales::percent_format()) +
             theme_bw()
         
     })
