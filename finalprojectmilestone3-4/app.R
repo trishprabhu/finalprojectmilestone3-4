@@ -24,7 +24,7 @@ hillary_sentiment_scores <- sentiment(hillarytweets$text[1:100])
 
 ui <- navbarPage(
     "Trisha's Final Project Milestones",
-    tabPanel("Tweet Sentiment Analysis",
+    tabPanel("Tweet Analysis",
              fluidPage(
                  titlePanel("Sentiment Analysis"),
                  sidebarLayout(
@@ -103,10 +103,9 @@ ui <- navbarPage(
                his presidency (both are still in the Dropbox link below!). 
                Looking ahead, for my next Milestone, I'm hoping to pivot a bit
                from Donald Trump's Twitter, and consider his language in other
-               spaces (e.g. his speeches). My goal is to building that, by 
-               looking at the speech level associated with his remarks, predicts 
-               (perhaps a regression?) just how often he stays on script during
-               a speech."), 
+               spaces (e.g. his speeches). By looking at the speech level 
+               associated with his remarks, I hope to better  understand just 
+               how often he stays on script during a speech."), 
              a("See the data currently in use by visiting this Dropbox link.",
                
 # At Dan's suggestion, I uploaded my datasets (which were large, and making it
@@ -203,6 +202,9 @@ server <- function(input, output) {
     })
     
     output$approvalSentiment <- renderPlot({
+        
+# I didn't know this, but because "graph_code.R" is in the same folder as this 
+# app, I can use objects/functions defined in that R script here! Super handy.
         
         finalgraphtib %>%
             ggplot(aes(x = approval_ratings, y = meanofmeans)) +
