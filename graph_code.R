@@ -80,7 +80,11 @@ n
 
 results <- rep(NA, n)
 
-# Add comments here.
+# In this forloop, we filter trump_approvals (our trimmed dataset) to those
+# values for which enddate is equivalent to one of the unique values of 
+# enddates. Assigning that to step1, we then use the base $ operator and mean
+# (no na.rm argument necessary) to calculate the mean approval rating for that
+# given enddate, and deposit it in a results vector the length of enddates.
 
 for (i in 1:n) {
   step1 <- trump_approvals %>%
