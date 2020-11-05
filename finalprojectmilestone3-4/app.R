@@ -80,32 +80,33 @@ ui <- navbarPage(
                      short period of time; a longer period -- with more 
                      datapoints -- would likely be more telling. (Accordingly,
                      that is something I'm aiming to work on for my next 
-                     Milestone!")
+                     Milestone!)")
                    ),
                    mainPanel(
                        plotOutput(outputId = "approvalSentiment")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
-             p("09/23 Status Report: Building off of my work from last week,
-               this week, I visualized (via 2 histograms) the distributions of 
-               Trump and Clinton's Tweets' sentiment scores. I also
-               created a mini-panel with some brief analysis. This was a good
-               exercise in using ggplot() in Shiny; I feel much more 
-               comfortable rendering plots now! With regards to my data, I'm 
-               using the same data -- Donald Trump's Tweets, from 07/13/20 to 
-               10/13/20, and Hillary Clinton's Tweets, from 08/03/16 to 
-               11/03/16, both derived from The Trump Twitter Archive --
-               but my goal is to pull data from Twitter's API (my developer 
-               account was approved!) for the next milestone. Also on the
-               data front, I found a new dataset -- Trump's approval rating
-               over the course of his presidency -- which I plan to analyze
-               in conjunction with how his sentiment on Twitter has evolved
-               during the same period (this dataset is now in the Dropbox link 
-               below). Looking ahead (as I discussed in Recitation this week!), 
-               I'm planning to pivot, and further explore Donald Trump's 
-               language off of Twitter -- by looking at the speech level 
-               associated with his remarks, I hope to better  understand just 
-               how often he stays on script during a speech."), 
+             p("11/06 Status Report: Building off of my work from last week,
+               this week, I began to really wrangle/work with my data; 
+               specifically, I created a graph visualizing how, over a 2-week
+               period, the sentiment in Donald Trump's Tweets changed relative
+               to his approval rating (e.g. as he gets more popular, does he
+               become more positive online?). This was a great exercise in
+               learning how to troubleshoot/work with data that wasn't in
+               the format I needed it to be -- I made extensive use of the
+               lubridate, sentimentr, and dplyr libraries; I also brought in
+               for loops! With regards to the data I'm using, I'm still using
+               Donald Trump's Tweets, from 07/13/20 to 10/13/20 (source: the
+               Trump Twitter Archive -- it's got everything I need, so I
+               figured there was no need to use Twitter's API), as well as the
+               dataset documenting Trump's approval ratings over the course
+               his presidency (both are still in the Dropbox link below!). 
+               Looking ahead, for my next Milestone, I'm hoping to pivot a bit
+               from Donald Trump's Twitter, and consider his language in other
+               spaces (e.g. his speeches). My goal is to building that, by 
+               looking at the speech level associated with his remarks, predicts 
+               (perhaps a regression?) just how often he stays on script during
+               a speech."), 
              a("See the data currently in use by visiting this Dropbox link.",
                
 # At Dan's suggestion, I uploaded my datasets (which were large, and making it
