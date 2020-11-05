@@ -64,10 +64,18 @@ ui <- navbarPage(
                     ),
                     mainPanel(
                         plotOutput(outputId = "hillPlot"),
-                        
+            
                         plotOutput(outputId = "donPlot")),
                    sidebarPanel(
-                   p("Analysis: Here, I look at ")
+                   p("Analysis: Here, I look at Donald Trump's daily approval
+                     ratings and Twitter sentiment scores (the average sentiment
+                     of his Tweets on a given day) over a 2 week period -- 
+                     09/30/20 - 10/13/20. Interestingly, Trump's approval 
+                     ratings and sentiment scores do not seem to be correlated.
+                     With that said, this is a relatively short period of time; 
+                     a longer period -- with more datapoints -- will likely be 
+                     more informative (something I'm aiming to work on for my 
+                     next Milestone!")
                    ),
                    mainPanel(
                        plotOutput(outputId = "approvalSentiment")))),
