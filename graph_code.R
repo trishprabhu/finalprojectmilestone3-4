@@ -12,7 +12,9 @@ library(readr)
 library(lubridate)
 trumptweets$newdates <- (as.Date(mdy_hms(trumptweets$created_at)))
 
-# Add comments here.
+# Create a subset of the trumptweets tibble with a new element_id column (to
+# calculate sentiment means later) and a smaller set of observations (to begin
+# with, for Milestone purposes).
 
 newtrumptib <- trumptweets %>%
   mutate(element_id = 1:2927) %>%
@@ -20,27 +22,32 @@ newtrumptib <- trumptweets %>%
   select(text, newdates, element_id) %>%
   head(., 500)
 
-# Add comments here.
+# Use sentiment() to calculate sentiment scores for 500 Tweets in the 
+# trumptweets dataset.
 
 trump_ss <- sentiment(get_sentences(trumptweets$text[1:500])) 
 
-# Add comments here.
+# By grouping by element_id, we're able to take the mean of the sentiment scores
+# for each Tweet.
 
 senttib <- trump_ss %>%
   group_by(element_id) %>%
   summarize(sentimentmeans = mean(sentiment, na.rm = TRUE),
             .groups = "drop")
 
-# Add comments here.
+# Use inner_join to get the Tweets, dates, and "sentimentmeans" in one tibble. 
 
 graphtib1 <- inner_join(newtrumptib, senttib, by = "element_id")
 
-# Add comments here.
+# But wait! These are sentiment means for each Tweet, and we want averages for 
+# each day -- as we'll be looking at Trump's approval rating on the comparable
+# day. Luckily, grouping by newdates, and taking the mean of the means does
+# the trick.
 
-graphtib2 <- graphtib %>%
+graphtib2 <- graphtib1 %>%
   group_by(newdates) %>%
   summarize(meanofmeans = mean(sentimentmeans),
-            .group = "drops")
+            .groups = "drop")
 
 # Read in the approval_polllist dataset.
 
