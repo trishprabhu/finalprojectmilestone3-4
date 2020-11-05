@@ -5,6 +5,7 @@ library(dplyr)
 library(sentimentr)
 library(tidyverse)
 library(readr)
+library(ggthemes)
 
 # Load the lubridate library; use as.Date to create a new column with the
 # created_at values in MDY format.
@@ -65,9 +66,13 @@ trump_approvals_almost <- approval_polllist %>%
   
 trump_approvals <- trump_approvals_almost[-48, ]
   
-# Create a vector of ending dates to iterate over.
+# Create a vector of ending dates to iterate over; order appropriately.
 
-enddates <- unique(trump_approvals$enddate)
+trump_approvals1 <- trump_approvals %>%
+  mutate(enddate = as.Date(enddate, "%m/%d/%Y")) %>%
+  mutate(enddate = as.character(sort(enddate)))
+
+enddates <- unique(trump_approvals1$enddate)
   
 #For loop is below:
 
@@ -87,11 +92,28 @@ results <- rep(NA, n)
 # given enddate, and deposit it in a results vector the length of enddates.
 
 for (i in 1:n) {
-  step1 <- trump_approvals %>%
+  step1 <- trump_approvals1 %>%
     filter(enddate == enddates[i])
   results[i] <- mean(step1$approve)
 }
 results
 
+# Add the results vector to finalgraphtib.
+
 finalgraphtib <- graphtib2 %>%
-  mutate(approval_ratings = results)
+  mutate(approval_ratings = results/100)
+
+# Use ggplot to create our graph (FINALLY)!
+
+finalgraph <- finalgraphtib %>%
+  ggplot(aes(x = approval_ratings, y = meanofmeans)) +
+  geom_point() +
+  labs(title = "Trump's approval rating and daily sentiment score on Twitter, 09/30 - 10/13",
+       subtitle = "Trump's approval ratings and sentiment scores do not seem to be correlated",
+       x = "Approval Rating",
+       y = "Tweet Sentiment Score",
+       caption = "Source: Trump Twitter Archive") +
+  scale_x_continuous(labels = scales::percent_format()) +
+  theme_bw()
+
+finalgraph
