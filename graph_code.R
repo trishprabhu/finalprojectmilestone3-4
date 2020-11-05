@@ -108,10 +108,10 @@ finalgraphtib <- graphtib2 %>%
 finalgraph <- finalgraphtib %>%
   ggplot(aes(x = approval_ratings, y = meanofmeans)) +
   geom_point() +
-  labs(title = "Trump's approval rating and daily sentiment score on Twitter, 09/30 - 10/13",
-       subtitle = "Trump's approval ratings and sentiment scores do not seem to be correlated",
+  labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/30 - 10/13",
+       subtitle = "Trump's approval ratings and sentiment scores seem to be weakly negatively correlated",
        x = "Approval Rating",
-       y = "Tweet Sentiment Score",
+       y = "Sentiment Score",
        caption = "Source: Trump Twitter Archive") +
   scale_x_continuous(labels = scales::percent_format()) +
   theme_bw()

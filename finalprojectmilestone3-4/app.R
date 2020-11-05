@@ -71,11 +71,15 @@ ui <- navbarPage(
                      ratings and Twitter sentiment scores (the average sentiment
                      of his Tweets on a given day) over a 2 week period -- 
                      09/30/20 - 10/13/20. Interestingly, Trump's approval 
-                     ratings and sentiment scores do not seem to be correlated.
-                     With that said, this is a relatively short period of time; 
-                     a longer period -- with more datapoints -- will likely be 
-                     more informative (something I'm aiming to work on for my 
-                     next Milestone!")
+                     ratings and sentiment scores seem to be weakly negatively
+                     correlated (as his approval rating increases, he becomes
+                     increasingly negative on Twitter -- perhaps he feels
+                     emboldened and vindicated?). One must be cautious in
+                     drawing any conclusions, though -- this is a relatively 
+                     short period of time; a longer period -- with more 
+                     datapoints -- would likely be more substantive. (Accordingly,
+                     that is something I'm aiming to work on for my next 
+                     Milestone!")
                    ),
                    mainPanel(
                        plotOutput(outputId = "approvalSentiment")))),
@@ -201,10 +205,10 @@ server <- function(input, output) {
         finalgraphtib %>%
             ggplot(aes(x = approval_ratings, y = meanofmeans)) +
             geom_point() +
-            labs(title = "Trump's approval rating and daily sentiment score on Twitter, 09/30 - 10/13",
-                 subtitle = "Trump's approval ratings and sentiment scores do not seem to be correlated",
+            labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/30 - 10/13",
+                 subtitle = "Trump's approval ratings and sentiment scores seem to be weakly negatively correlated",
                  x = "Approval Rating",
-                 y = "Tweet Sentiment Score",
+                 y = "Sentiment Score",
                  caption = "Source: Trump Twitter Archive") +
             scale_x_continuous(labels = scales::percent_format()) +
             theme_bw()
