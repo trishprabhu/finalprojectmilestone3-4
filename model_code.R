@@ -66,8 +66,21 @@ stock_data <- read_csv("data/current_stock_data.csv")
 
 # (Substantially) clean (yikes!) and subset the data to the relevant date range.
 
-stock_data %>%
-  rename(Date = Sepal.Length,
-         sepal_width = Sepal.Width)
+colnames(stock_data) <- c("Date", 
+                "open", 
+                "high",
+                "low",
+                "close")
 
-  
+stock_data <- stock_data[-1, ]
+
+stock_data %>%
+  mutate(id = 1:4245) %>%
+  filter(id >= 4203 & id <= 4225) %>%
+  group_by(Date) %>%
+  as.numeric(open) %>%
+  as.numeric(high) %>%
+  as.numeric(low) %>%
+  as.numeric(close) %>%
+  mutate(vol = high - low)
+
