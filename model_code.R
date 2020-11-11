@@ -62,9 +62,12 @@ approvalratingdistribution
 # Read in stock data (another variable that could potentially influence Trump's
 # daily Twitter score/can serve as a control).
 
-gov50_stock_data <- read_csv("data/gov50_stock_data.csv")
+stock_data <- read_csv("data/current_stock_data.csv")
 
-# Subset the data to the relevant date range.
+# (Substantially) clean (yikes!) and subset the data to the relevant date range.
 
-gov50_stock_data %>%
+stock_data %>%
+  rename(Date = Sepal.Length,
+         sepal_width = Sepal.Width)
+
   
