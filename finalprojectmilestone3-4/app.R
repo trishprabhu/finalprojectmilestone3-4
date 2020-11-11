@@ -24,10 +24,12 @@ hillary_sentiment_scores <- sentiment(hillarytweets$text[1:100])
 
 # UI definition:
 
+library(shinythemes)
+
 ui <- navbarPage(
     "Trisha's Final Project Milestones",
     tabPanel("Tweet Analysis",
-             fluidPage(
+             fluidPage(theme = shinytheme("superhero"),
                  titlePanel("Sentiment Analysis"),
                  sidebarLayout(
                      sidebarPanel(

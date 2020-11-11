@@ -126,8 +126,37 @@ updated_stock_data <- stock_data %>%
           low = 26.02,
           close = 26.38,
           range = 4.41,
-          .before = 17)
+          .before = 17) %>%
+  add_row(newdates = as.Date("10/03/2020", "%m/%d/%Y"), 
+          open = 28.87,
+          high = 29.90,
+          low = 26.93,
+          close = 27.63,
+          range = 2.97,
+          .before = 23) %>%
+  add_row(newdates = as.Date("10/04/2020", "%m/%d/%Y"), 
+          open = 28.87,
+          high = 29.90,
+          low = 26.93,
+          close = 27.63,
+          range = 2.97,
+          .before = 24) %>%
+  add_row(newdates = as.Date("10/10/2020", "%m/%d/%Y"), 
+          open = 26.20,
+          high = 26.22,
+          low = 24.03,
+          close = 25.00,
+          range = 2.19,
+          .before = 30) %>%
+  add_row(newdates = as.Date("10/11/2020", "%m/%d/%Y"), 
+          open = 26.20,
+          high = 26.22,
+          low = 24.03,
+          close = 25.00,
+          range = 1.51,
+          .before = 31)
 
-View(updated_stock_data)
 
+final_stock_data <- updated_stock_data[-1, ]
 
+finalstocktib <- inner_join(finalgraphtib, final_stock_data, by = "newdates")
