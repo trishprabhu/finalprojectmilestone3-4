@@ -5,8 +5,7 @@ library(rstanarm)
 library(gt)
 library(gtsummary)
 
-# A form of weighted least squares (mm estimator; not as efficient, given the
-# size of data, but it's going to handle the outlier).
+# Create a stan_glm model.
 
 fit_obj <- stan_glm(meanofmeans ~ approval_ratings,
               data = finalgraphtib, 
@@ -160,3 +159,36 @@ updated_stock_data <- stock_data %>%
 final_stock_data <- updated_stock_data[-1, ]
 
 finalstocktib <- inner_join(finalgraphtib, final_stock_data, by = "newdates")
+
+# A form of weighted least squares (mm estimator; not as efficient, given the
+# size of data, but it's going to handle the outlier).
+
+stock_obj_rlm <- rlm(meanofmeans ~ range, 
+                 data = finalstocktib,
+                 method = "MM")
+
+summary(stock_obj_rlm)
+
+# Create a stan_glm model.
+
+stock_obj <- stan_glm(meanofmeans ~ range,
+                    data = finalstocktib, 
+                    refresh = 0)
+
+print(stock_obj, view = FALSE, digits = 5)
+
+# Create a visualization.
+
+stockgraph <- finalstocktib %>%
+  ggplot(aes(x = range, y = meanofmeans)) +
+  geom_point() +
+  geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+  labs(title = "Stock volatility and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
+       subtitle = "The S&P 500's volatility and Trump's sentiment scores seem to be positively correlated",
+       x = "Range",
+       y = "Sentiment Score",
+       caption = "Source: Trump Twitter Archive; CBOE Volatility Index") +
+  theme_bw()
+
+stockgraph
+

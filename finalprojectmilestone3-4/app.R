@@ -248,7 +248,7 @@ server <- function(input, output) {
 # I know that the lines below surpasses the 80 character limit, but cutting them
 # off was not aesthetically appealing on my graph. Apologies!
             
-            labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/30 - 10/13",
+            labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/12 - 10/13",
                  subtitle = "Trump's approval ratings and sentiment scores seem to be weakly positively correlated",
                  x = "Approval Rating",
                  y = "Sentiment Score",
