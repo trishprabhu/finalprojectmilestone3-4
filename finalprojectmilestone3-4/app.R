@@ -13,6 +13,8 @@ summary(trumptweets)
 hillarytweets <- read_csv("hillarytweets.csv")
 summary(hillarytweets)
 
+# source("graph_code.R")
+
 # Rather than calculate sentiment scores for all of the Tweets (thousands of
 # observations, which would substantially slow things down, I took a subset
 # of observations).
@@ -66,8 +68,17 @@ ui <- navbarPage(
                         plotOutput(outputId = "hillPlot"),
             
                         plotOutput(outputId = "donPlot")),
-                   sidebarPanel(
-                   p("Analysis: Here, I look at Donald Trump's daily approval
+#                 mainPanel(
+#                     tabsetPanel(type = "tab",
+#                                tabPanel("pdf", 
+#                                          tags$ifframe(style = "height:400px; width: 100%; scrolling = yes", 
+#                                                       src = "finalgraph.pdf"))))
+                )),
+    tabPanel("Model",
+             titlePanel("How/why does Trump's sentiment on Twitter change?"),
+             titlePanel("Approval Rating"),
+             sidebarPanel(
+               p("Analysis: Here, I look at Donald Trump's daily approval
                      ratings and Twitter sentiment scores (the average sentiment
                      of his Tweets on a given day) over a 2 week period -- 
                      09/30/20 - 10/13/20. Interestingly, Trump's approval 
@@ -81,15 +92,24 @@ ui <- navbarPage(
                      datapoints -- would likely be more telling. (Accordingly,
                      that is something I'm aiming to work on for my next 
                      Milestone!)")
-                   ),
-                  mainPanel(
-                      plotOutput(outputId = "approvalSentiment")),
-#                  mainPanel(
-#                     tabsetPanel(type = "tab",
-#                                 tabPanel("pdf", 
-#                                           tags$ifframe(style = "height:400px; width: 100%; scrolling = yes", 
-#                                                        src = "finalgraph.pdf"))))
-                )),
+             ),
+             mainPanel(
+               plotOutput(outputId = "approvalSentiment")),
+             sidebarPanel(
+               p("In this graph, we visualize the posterior distributions for
+                 Trump's daily Twitter sentiment score in 3 hypothetical 
+                 universes: one in which he has a 30% approval rating, one
+                 in which he has a 45% approval rating, and one in which he has
+                 a 60% approval rating. As is clear, we have a much more precise
+                 estimate for a hypothetical Trump with a 45% approval rating,
+                 given the data; while, on average, the 30% and 60% approval
+                 rating scenarios are less and more positive, generally, the
+                 distributions are rather wide, reflecting our uncertainty."
+               )
+             ),
+             mainPanel(
+               plotOutput(outputId = "approvalPosterior")),
+    ),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("11/06 Status Report: Building off of my work from last week,
@@ -208,9 +228,9 @@ server <- function(input, output) {
     })
     
         
-#   output$newtabs <- renderUI({
-        
-#    })
+#       output$newtabs <- renderUI({
+#      
+#       })
     
     
     output$approvalSentiment <- renderPlot({
@@ -221,18 +241,48 @@ server <- function(input, output) {
         finalgraphtib %>%
             ggplot(aes(x = approval_ratings, y = meanofmeans)) +
             geom_point() +
+            geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
             
 # I know that the lines below surpasses the 80 character limit, but cutting them
 # off was not aesthetically appealing on my graph. Apologies!
             
             labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/30 - 10/13",
-                 subtitle = "Trump's approval ratings and sentiment scores seem to be weakly negatively correlated",
+                 subtitle = "Trump's approval ratings and sentiment scores seem to be weakly positively correlated",
                  x = "Approval Rating",
                  y = "Sentiment Score",
                  caption = "Source: Trump Twitter Archive") +
             scale_x_continuous(labels = scales::percent_format()) +
             theme_bw()
         
+    })
+    
+    output$approvalPosterior <- renderPlot({
+      
+      approvalratingdistribution <- pp %>% 
+        rename(`30` = `1`) %>% 
+        rename(`45` = `2`) %>% 
+        rename(`60` = `3`) %>% 
+        pivot_longer(cols = `30`:`60`,
+                     names_to = "parameter",
+                     values_to = "score") %>%
+        ggplot(aes(x = score, fill = parameter)) +
+        geom_histogram(aes(y = after_stat(count/sum(count))), 
+                       alpha = 0.7,
+                       bins = 100,
+                       color = "white",
+                       position = "identity") +
+        labs(title = "Posterior Distributions for Sentiment Score",
+             subtitle = "We have a much more precise estimate for a hypothetical Trump 
+       with a 45% approval rating, given the data",
+             x = "Sentiment Score",
+             y = "Proportion") +
+        scale_y_continuous(labels = scales::percent_format()) +
+        scale_fill_manual(name = "Approval Rating",
+                          values = c("dodgerblue", "salmon", "green")) +
+        theme_bw()
+      
+      approvalratingdistribution
+    
     })
     
 }
