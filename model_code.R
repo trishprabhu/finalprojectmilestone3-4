@@ -9,9 +9,10 @@ library(gtsummary)
 
 fit_obj <- stan_glm(meanofmeans ~ approval_ratings,
               data = finalgraphtib, 
+              family = gaussian(),
               refresh = 0)
 
-print(fit_obj, view = FALSE)
+print(fit_obj, view = FALSE, digits = 5)
 
 # Create a table of the regression results:
 
@@ -145,14 +146,14 @@ updated_stock_data <- stock_data %>%
           high = 26.22,
           low = 24.03,
           close = 25.00,
-          range = 2.19,
+          range = 3.11,
           .before = 30) %>%
   add_row(newdates = as.Date("10/11/2020", "%m/%d/%Y"), 
           open = 26.20,
           high = 26.22,
           low = 24.03,
           close = 25.00,
-          range = 1.51,
+          range = 3.11,
           .before = 31)
 
 
@@ -160,8 +161,9 @@ final_stock_data <- updated_stock_data[-1, ]
 
 finalstocktib <- inner_join(finalgraphtib, final_stock_data, by = "newdates")
 
-# A form of weighted least squares (mm estimator; not as efficient, given the
-# size of data, but it's going to handle the outlier).
+# Create a "robust" model. This is a form of weighted least squares (mm 
+# estimator; not as efficient, given the size of data, but it's going to handle 
+# any outliers).
 
 stock_obj_rlm <- rlm(meanofmeans ~ range, 
                  data = finalstocktib,
@@ -169,7 +171,8 @@ stock_obj_rlm <- rlm(meanofmeans ~ range,
 
 summary(stock_obj_rlm)
 
-# Create a stan_glm model.
+# Create a stan_glm model to examine stock volatility/Trump's (the results
+# suggest a similar coefficient to the one above).
 
 stock_obj <- stan_glm(meanofmeans ~ range,
                     data = finalstocktib, 
@@ -177,7 +180,8 @@ stock_obj <- stan_glm(meanofmeans ~ range,
 
 print(stock_obj, view = FALSE, digits = 5)
 
-# Create a visualization.
+# Create a visualization of the relationship between range (stock volatility)
+# Trump's sentiment scores (over the same period).
 
 stockgraph <- finalstocktib %>%
   ggplot(aes(x = range, y = meanofmeans)) +
@@ -192,3 +196,11 @@ stockgraph <- finalstocktib %>%
 
 stockgraph
 
+# Let's now return to our initial model, and bring in stock volatility as a 
+# control variable.
+
+fit_obj <- stan_glm(meanofmeans ~ approval_ratings + range,
+                    data = finalstocktib, 
+                    refresh = 0)
+
+print(fit_obj, view = FALSE, digits = 5)

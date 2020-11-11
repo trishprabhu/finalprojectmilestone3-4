@@ -111,6 +111,14 @@ ui <- navbarPage(
              ),
              mainPanel(
                plotOutput(outputId = "approvalPosterior")),
+             titlePanel("Stock Volatility"),
+             sidebarPanel(
+               p("Explanation here."
+               )
+             ),
+             mainPanel(
+             plotOutput(outputId = "stockSentiment")),
+             titlePanel("Interactive Regression Results"),
     ),
     tabPanel("Discussion",
              titlePanel("About The Data"),
@@ -286,6 +294,24 @@ server <- function(input, output) {
       approvalratingdistribution
     
     })
+    
+    output$stockSentiment <- renderPlot({
+      
+      stockgraph <- finalstocktib %>%
+        ggplot(aes(x = range, y = meanofmeans)) +
+        geom_point() +
+        geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+        labs(title = "Stock volatility and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
+             subtitle = "The S&P 500's volatility and Trump's sentiment scores seem to be positively correlated",
+             x = "Range",
+             y = "Sentiment Score",
+             caption = "Source: Trump Twitter Archive; CBOE Volatility Index") +
+        theme_bw()
+      
+      stockgraph
+      
+    })
+  
     
 }
 
