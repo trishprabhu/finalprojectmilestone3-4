@@ -14,9 +14,11 @@ fit_obj <- stan_glm(meanofmeans ~ approval_ratings,
 
 print(fit_obj, view = FALSE, digits = 5)
 
-# Create a table of the regression results:
+# Create a table of the regression results (doesn't currently work; unsure
+# why):
 
-tbl_regression(fit_obj) %>%
+fit_obj %>%
+  tbl_regression() %>%
   as_gt() %>%
   tab_header(title = "Regression of Trump's Twitter Sentiment Scores", 
              subtitle = "The Effect of Approval Ratings on Trump's Twitter Sentiment Score") %>% 

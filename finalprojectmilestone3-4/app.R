@@ -73,7 +73,9 @@ ui <- navbarPage(
 #                 mainPanel(
 #                     tabsetPanel(type = "tab",
 #                                tabPanel("pdf", 
-#                                          tags$ifframe(style = "height:400px; width: 100%; scrolling = yes", 
+#                                          tags$ifframe(style = "height:400px; 
+#                                                                 width: 100%; 
+#                                                                 scrolling = yes", 
 #                                                       src = "finalgraph.pdf"))))
                 )),
     tabPanel("Model",
@@ -245,8 +247,11 @@ server <- function(input, output) {
     
     output$approvalSentiment <- renderPlot({
         
-# I didn't know this, but because "graph_code.R" is in the same folder as this 
-# app, I can use objects/functions defined in that R script here! Super handy.
+# I didn't know this, but because "approvalgraph_code.R" is in the same folder 
+# as this app, I can use objects/functions defined in that R script here! 
+# Super handy. Update: unfortunately, I need to read the R script in to this
+# App in order for the graph below to render in my published ShinyApp. Currently
+# troubleshooting.
         
         finalgraphtib %>%
             ggplot(aes(x = approval_ratings, y = meanofmeans)) +
@@ -282,8 +287,8 @@ server <- function(input, output) {
                        color = "white",
                        position = "identity") +
         labs(title = "Posterior Distributions for Sentiment Score",
-             subtitle = "We have a much more precise estimate for a hypothetical Trump 
-       with a 45% approval rating, given the data",
+             subtitle = "We have a much more precise estimate for a hypothetical 
+             Trump with a 45% approval rating, given the data",
              x = "Sentiment Score",
              y = "Proportion") +
         scale_y_continuous(labels = scales::percent_format()) +
@@ -301,6 +306,10 @@ server <- function(input, output) {
         ggplot(aes(x = range, y = meanofmeans)) +
         geom_point() +
         geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+        
+# I know that the lines below surpasses the 80 character limit, but cutting them
+# off was not aesthetically appealing on my graph. Apologies!
+        
         labs(title = "Stock volatility and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
              subtitle = "The S&P 500's volatility and Trump's sentiment scores seem to be positively correlated",
              x = "Range",
