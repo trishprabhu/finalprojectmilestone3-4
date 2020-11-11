@@ -75,29 +75,59 @@ colnames(stock_data) <- c("Date",
 stock_data <- stock_data[-1, ]
 
 
-stock_data %>%
+updated_stock_data <- stock_data %>%
   mutate(id = 1:4245) %>%
   filter(id >= 4203 & id <= 4225) %>%
-  mutate(Date = as.Date(Date, "%m/%d/%Y")) %>%
+  mutate(newdates = as.Date(Date, "%m/%d/%Y")) %>%
   mutate(open = as.numeric(open)) %>%
   mutate(high = as.numeric(high)) %>%
   mutate(low = as.numeric(low)) %>%
   mutate(close = as.numeric(close)) %>%
   mutate(range = high - low) %>%
-  select(Date, open, high, low, close, range) %>%
-  add_row(Date = as.Date("09/12/2020", "%m/%d/%Y"), 
+  select(newdates, open, high, low, close, range) %>%
+  add_row(newdates = as.Date("09/12/2020", "%m/%d/%Y"), 
           open = 28.6,
           high = 29.7,
           low = 26.5,
           close = 26.9,
           range = 3.22,
           .before = 2) %>%
-  add_row(Date = as.Date("09/13/2020", "%m/%d/%Y"), 
+  add_row(newdates = as.Date("09/13/2020", "%m/%d/%Y"), 
           open = 28.6,
           high = 29.7,
           low = 26.5,
           close = 26.9,
           range = 3.22,
-          .before = 3)
+          .before = 3) %>%
+  add_row(newdates = as.Date("09/19/2020", "%m/%d/%Y"), 
+          open = 26.6,
+          high = 28.1,
+          low = 25.3,
+          close = 25.8,
+          range = 2.82,
+          .before = 9) %>%
+  add_row(newdates = as.Date("09/20/2020", "%m/%d/%Y"), 
+          open = 26.6,
+          high = 28.1,
+          low = 25.3,
+          close = 25.8,
+          range = 2.82,
+          .before = 10) %>%
+  add_row(newdates = as.Date("09/26/2020", "%m/%d/%Y"), 
+          open = 28.17,
+          high = 30.43,
+          low = 26.02,
+          close = 26.38,
+          range = 4.41,
+          .before = 16) %>%
+  add_row(newdates = as.Date("09/27/2020", "%m/%d/%Y"), 
+          open = 28.17,
+          high = 30.43,
+          low = 26.02,
+          close = 26.38,
+          range = 4.41,
+          .before = 17)
+
+View(updated_stock_data)
 
 
