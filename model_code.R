@@ -74,13 +74,30 @@ colnames(stock_data) <- c("Date",
 
 stock_data <- stock_data[-1, ]
 
+
 stock_data %>%
   mutate(id = 1:4245) %>%
   filter(id >= 4203 & id <= 4225) %>%
-  group_by(Date) %>%
-  as.numeric(open) %>%
-  as.numeric(high) %>%
-  as.numeric(low) %>%
-  as.numeric(close) %>%
-  mutate(vol = high - low)
+  mutate(Date = as.Date(Date, "%m/%d/%Y")) %>%
+  mutate(open = as.numeric(open)) %>%
+  mutate(high = as.numeric(high)) %>%
+  mutate(low = as.numeric(low)) %>%
+  mutate(close = as.numeric(close)) %>%
+  mutate(range = high - low) %>%
+  select(Date, open, high, low, close, range) %>%
+  add_row(Date = as.Date("09/12/2020", "%m/%d/%Y"), 
+          open = 28.6,
+          high = 29.7,
+          low = 26.5,
+          close = 26.9,
+          range = 3.22,
+          .before = 2) %>%
+  add_row(Date = as.Date("09/13/2020", "%m/%d/%Y"), 
+          open = 28.6,
+          high = 29.7,
+          low = 26.5,
+          close = 26.9,
+          range = 3.22,
+          .before = 3)
+
 
