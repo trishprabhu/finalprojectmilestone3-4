@@ -59,7 +59,7 @@ ui <- navbarPage(
 # appealing.
 
                     sidebarPanel(
-                        p("Analysis: Here, I visualize the distributions
+                        p("Here, I visualize the distributions
                         of Trump and Clinton's Tweets' sentiment scores (above). 
                         On average, they are both relatively neutral on Twitter, 
                         but it's clear: Trump's Tweets see much more variation
@@ -82,20 +82,18 @@ ui <- navbarPage(
              titlePanel("How/why does Trump's sentiment on Twitter change?"),
              titlePanel("Approval Rating"),
              sidebarPanel(
-               p("Analysis: Here, I look at Donald Trump's daily approval
+               p("Here, I look at Donald Trump's daily approval
                      ratings and Twitter sentiment scores (the average sentiment
-                     of his Tweets on a given day) over a 2 week period -- 
-                     09/30/20 - 10/13/20. Interestingly, Trump's approval 
-                     ratings and sentiment scores seem to be weakly negatively
-                     correlated (as his approval rating increases, he becomes
-                     increasingly negative on Twitter -- perhaps he feels
-                     emboldened and vindicated?). One must be cautious in
-                     drawing any conclusions, though -- not only is the
-                     relationship relatively weak, this is also a relatively 
-                     short period of time; a longer period -- with more 
-                     datapoints -- would likely be more telling. (Accordingly,
-                     that is something I'm aiming to work on for my next 
-                     Milestone!)")
+                     of his Tweets on a given day) over a 1 month period -- 
+                     09/12/20 - 10/13/20. As we'd expect, Trump's approval 
+                     ratings and sentiment scores seem to be weakly positively
+                     correlated (as his approval rating increases, he also
+                     becomes more positive on Twitter -- perhaps as he becomes
+                     more popular, it puts him in a sunny mood). One must be 
+                     cautious in drawing any conclusions, though -- not only is 
+                     the relationship relatively weak, this is also a relatively 
+                     short period of time; a longer period (like 1 year) -- with 
+                     more datapoints -- would likely be more telling.")
              ),
              mainPanel(
                plotOutput(outputId = "approvalSentiment")),
@@ -104,18 +102,39 @@ ui <- navbarPage(
                  Trump's daily Twitter sentiment score in 3 hypothetical 
                  universes: one in which he has a 30% approval rating, one
                  in which he has a 45% approval rating, and one in which he has
-                 a 60% approval rating. As is clear, we have a much more precise
-                 estimate for a hypothetical Trump with a 45% approval rating,
-                 given the data; while, on average, the 30% and 60% approval
-                 rating scenarios are less and more positive, generally, the
-                 distributions are rather wide, reflecting our uncertainty."
+                 a 60% approval rating. The distributions reflect the linear
+                 relationship we observed above -- the hypothetical Trump with a
+                 60% approval rating has a posterior distribution for sentiment
+                 scores that is skewed to the right (more positive). It's also 
+                 clear that we have a much more precise estimate for the 
+                 hypothetical Trump with a 45% approval rating, given the data; 
+                 while, on average, the 30% and 60% approval rating scenarios 
+                 are less and more positive, respectively, the distributions are 
+                 rather wide, so we wouldn't be surprised if the Trump with a 
+                 30% approval rating had a positive daily Twitter sentiment 
+                 score."
                )
              ),
              mainPanel(
                plotOutput(outputId = "approvalPosterior")),
-             titlePanel("Stock Volatility"),
+             titlePanel("Stock Market"),
              sidebarPanel(
-               p("Explanation here."
+               p("Here, I look at daily stock market opening/closing differences
+               and Donald Trump's corresponding Twitter sentiment scores over a 
+               1 month period (09/12 - 10/13). Interestingly, the S&P 500's 
+               opening/closing differences and Trump's sentiment scores seem to 
+               be very weakly negatively correlated -- indeed the regression results 
+               (which you can view below, in the interactive table!) produce a 
+               coefficient for difference which is very small/negative. Overall, then, 
+               it seems that the stock market doesn't greatly influence 
+               Donald Trump's sentiment on Twitter, and any influence is such 
+               that as the difference becomes more positive (a higher closing 
+               index relative to the opening index) Trump becomes a bit more 
+               negative (perhaps he feels vindicated?).
+               While the relationship does seem to be very weak, we can still
+               use this dependent variable as a control in our regression of
+               Trump's sentiment scores on his approval ratings -- as we do 
+              below."
                )
              ),
              mainPanel(
@@ -287,12 +306,12 @@ server <- function(input, output) {
                        color = "white",
                        position = "identity") +
         labs(title = "Posterior Distributions for Sentiment Score",
-             subtitle = "We have a much more precise estimate for a hypothetical 
-             Trump with a 45% approval rating, given the data",
+             subtitle = "We have a much more precise estimate for the hypothetical Trump with a 45% approval rating, given the data",
              x = "Sentiment Score",
-             y = "Proportion") +
+             y = "Proportion",
+             caption = "Source: Trump Twitter Archive, FiveThirtyEight") +
         scale_y_continuous(labels = scales::percent_format()) +
-        scale_fill_manual(name = "Approval Rating",
+        scale_fill_manual(name = "Approval Rating (%)",
                           values = c("dodgerblue", "salmon", "green")) +
         theme_bw()
       
@@ -310,9 +329,9 @@ server <- function(input, output) {
 # I know that the lines below surpasses the 80 character limit, but cutting them
 # off was not aesthetically appealing on my graph. Apologies!
         
-        labs(title = "Stock volatility and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
-             subtitle = "The S&P 500's volatility and Trump's sentiment scores seem to be positively correlated",
-             x = "Range",
+        labs(title = "Stock opening/closing differences and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
+             subtitle = "The S&P 500's opening/closing differences and Trump's sentiment scores seem to be very, very weakly negatively correlated",
+             x = "Difference",
              y = "Sentiment Score",
              caption = "Source: Trump Twitter Archive; CBOE Volatility Index") +
         theme_bw()

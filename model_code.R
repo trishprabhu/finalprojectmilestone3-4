@@ -85,77 +85,77 @@ updated_stock_data <- stock_data %>%
   mutate(high = as.numeric(high)) %>%
   mutate(low = as.numeric(low)) %>%
   mutate(close = as.numeric(close)) %>%
-  mutate(range = high - low) %>%
+  mutate(range = close - open) %>%
   select(newdates, open, high, low, close, range) %>%
   add_row(newdates = as.Date("09/12/2020", "%m/%d/%Y"), 
           open = 28.6,
           high = 29.7,
           low = 26.5,
           close = 26.9,
-          range = 3.22,
+          range = -1.76,
           .before = 2) %>%
   add_row(newdates = as.Date("09/13/2020", "%m/%d/%Y"), 
           open = 28.6,
           high = 29.7,
           low = 26.5,
           close = 26.9,
-          range = 3.22,
+          range = -1.76,
           .before = 3) %>%
   add_row(newdates = as.Date("09/19/2020", "%m/%d/%Y"), 
           open = 26.6,
           high = 28.1,
           low = 25.3,
           close = 25.8,
-          range = 2.82,
+          range = -0.82,
           .before = 9) %>%
   add_row(newdates = as.Date("09/20/2020", "%m/%d/%Y"), 
           open = 26.6,
           high = 28.1,
           low = 25.3,
           close = 25.8,
-          range = 2.82,
+          range = -0.82,
           .before = 10) %>%
   add_row(newdates = as.Date("09/26/2020", "%m/%d/%Y"), 
           open = 28.17,
           high = 30.43,
           low = 26.02,
           close = 26.38,
-          range = 4.41,
+          range = -1.79,
           .before = 16) %>%
   add_row(newdates = as.Date("09/27/2020", "%m/%d/%Y"), 
           open = 28.17,
           high = 30.43,
           low = 26.02,
           close = 26.38,
-          range = 4.41,
+          range = -1.79,
           .before = 17) %>%
   add_row(newdates = as.Date("10/03/2020", "%m/%d/%Y"), 
           open = 28.87,
           high = 29.90,
           low = 26.93,
           close = 27.63,
-          range = 2.97,
+          range = -1.24,
           .before = 23) %>%
   add_row(newdates = as.Date("10/04/2020", "%m/%d/%Y"), 
           open = 28.87,
           high = 29.90,
           low = 26.93,
           close = 27.63,
-          range = 2.97,
+          range = -1.24,
           .before = 24) %>%
   add_row(newdates = as.Date("10/10/2020", "%m/%d/%Y"), 
           open = 26.20,
           high = 26.22,
           low = 24.03,
           close = 25.00,
-          range = 3.11,
+          range = -1.20,
           .before = 30) %>%
   add_row(newdates = as.Date("10/11/2020", "%m/%d/%Y"), 
           open = 26.20,
           high = 26.22,
           low = 24.03,
           close = 25.00,
-          range = 3.11,
+          range = -1.20,
           .before = 31)
 
 
@@ -189,9 +189,10 @@ stockgraph <- finalstocktib %>%
   ggplot(aes(x = range, y = meanofmeans)) +
   geom_point() +
   geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
-  labs(title = "Stock volatility and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
-       subtitle = "The S&P 500's volatility and Trump's sentiment scores seem to be positively correlated",
-       x = "Range",
+  labs(title = "Stock opening/closing differences and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
+       subtitle = "The S&P 500's opening/closing differences and Trump's 
+       sentiment scores seem to be very, very weakly negatively correlated",
+       x = "Difference",
        y = "Sentiment Score",
        caption = "Source: Trump Twitter Archive; CBOE Volatility Index") +
   theme_bw()
