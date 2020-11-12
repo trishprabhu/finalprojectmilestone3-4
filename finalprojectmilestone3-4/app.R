@@ -130,7 +130,7 @@ ui <- navbarPage(
                Donald Trump's sentiment on Twitter, and any influence is such 
                that as the difference becomes more positive (a higher closing 
                index relative to the opening index) Trump becomes a bit more 
-               negative (perhaps he feels vindicated?).
+               negative on Twitter (perhaps he feels vindicated?).
                While the relationship does seem to be very weak, we can still
                use this dependent variable as a control in our regression of
                Trump's sentiment scores on his approval ratings -- as we do 
