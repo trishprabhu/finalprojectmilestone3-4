@@ -143,26 +143,36 @@ ui <- navbarPage(
     ),
     tabPanel("Discussion",
              titlePanel("About The Data"),
-             p("11/06 Status Report: Building off of my work from last week,
-               this week, I began to really wrangle/work with my data; 
-               specifically, I created a graph visualizing how, over a 2-week
+             p("11/13 Status Report: This week, I began building the
+               Model portion of this project -- working off of the graph
+               I built last week (that looked at Donald Trump's daily
+               approval ratings/associated Twitter sentiment scores),
+               I created a regression model (with additional observations) 
+               to quantify/better understand that relationship. I also
+               found some new data -- on stock market volatility (specifically,
+               the S&P 500's daily opening/closing differences), which, after 
+               extensive wrangling/cleaning, I incorporated into my model 
+               (I also created a separate model regressing Trump's sentiment 
+               scores on the stock data). In doing all of this, I created 2 new
+               visualizations -- one looking at the posterior distributions
+               for Trump's daily Twitter sentiment score in 3 hypothetical 
+               universes (in each, he has different approval ratings), and
+               a geom_point ggplot looking at how, over a 1-month
                period, the sentiment in Donald Trump's Tweets changed relative
-               to his approval rating (e.g. as he gets more popular, does he
-               become more positive online?). This was a great exercise in
-               learning how to troubleshoot/work with data that wasn't in
-               the format I needed it to be -- I made extensive use of the
-               lubridate, sentimentr, and dplyr libraries; I also brought in
-               for loops! With regards to the data in use: I'm still using
-               Donald Trump's Tweets, from 07/13/20 to 10/13/20 (source: the
-               Trump Twitter Archive -- it's got everything I need, so I
-               figured there was no need to use Twitter's API), as well as the
-               dataset documenting Trump's approval ratings over the course
-               his presidency (both csvs are still in the Dropbox link below!). 
-               Looking ahead, for my next Milestone, I'm hoping to pivot a bit
-               from Donald Trump's Twitter, and consider his language in other
-               spaces (e.g. his speeches). By looking at the speech level 
-               associated with his remarks, I hope to better  understand just 
-               how often he stays on script during a speech."), 
+               to the S&P 500's opening/closing differences (there was a
+               very weak negative relationship). With regards to the data
+               in use, I'm still using Donald Trump's Tweets, from 
+               7/13/20 to 10/13/20 (source: the Trump Twitter Archive) and the
+               FiveThirtyEight Trump approval rating data; I'm also now using 
+               the CBOE Volatility Index's stock data. As always, all of this
+               data is in the Dropbox link below. Looking ahead, my big
+               goal for next week is to make everything in my app interactive,
+               as opposed to static (as it currently is). Ideally, I'd like
+               to combine a few of my visualizations by giving users the ability
+               to choose which they'd like to visualize, dynamically; I also 
+               want to create an interactive regression table, where users can 
+               regress Donald Trump's Twitter sentiment scores on the dependent 
+               variable of their choice."), 
              a("See the data currently in use by visiting this Dropbox link.",
                
 # At Dan's suggestion, I uploaded my datasets (which were large, and making it
