@@ -7,6 +7,11 @@ library(readr)
 library(sentimentr)
 library(tidyverse)
 library(ggthemes)
+library(DT)
+library(shinydashboard)
+library(shinydashboardPlus)
+library(ggvis)
+library(dplyr)
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
@@ -23,6 +28,12 @@ summary(hillarytweets)
 trump_sentiment_scores <- sentiment(trumptweets$text[1:100])
 hillary_sentiment_scores <- sentiment(hillarytweets$text[1:100])
 
+dataframe_options <-
+  c(
+    "hillary_sentiment_scores",
+    "trump_sentiment_scores"
+  )
+
 # UI definition:
 
 library(shinythemes)
@@ -30,7 +41,7 @@ library(shinythemes)
 ui <- navbarPage(
     "Trisha's Final Project Milestones",
     tabPanel("Tweet Analysis",
-             fluidPage(theme = shinytheme("superhero"),
+             fluidPage(theme = shinytheme("readable"),
                  titlePanel("Sentiment Analysis"),
                  sidebarLayout(
                      sidebarPanel(
@@ -67,10 +78,22 @@ ui <- navbarPage(
                         in sentiment; by comparison, Clinton rarely reaches the 
                         most extreme sentiment scores (1 and -1).")
                     ),
+                    sidebarMenu(
+                      selectInput(inputId = "candidate", 
+                                  label = "Choose a Twitter account:",
+                                  choices = dataframe_options)),
                     mainPanel(
                         plotOutput(outputId = "hillPlot"),
-            
-                        plotOutput(outputId = "donPlot")),
+                        
+                        sliderInput("binshill", 
+                                    "Set the number of bins:",
+                                    min = 0, max = 50, value = 20
+                        ),
+                        plotOutput(outputId = "donPlot"),
+                        sliderInput("binsdon", 
+                                    "Set the number of bins:",
+                                    min = 0, max = 50, value = 20
+                        )),
 #                 mainPanel(
 #                     tabsetPanel(type = "tab",
 #                                tabPanel("pdf", 
@@ -200,7 +223,7 @@ ui <- navbarPage(
 # Define server logic:
 
 server <- function(input, output) {
-    
+  
     datasetInput <- reactive({
         switch(input$dataset,
                
@@ -211,6 +234,13 @@ server <- function(input, output) {
                "Hillary Clinton" = hillary_sentiment_scores,
                "Donald Trump" = trump_sentiment_scores)
     })
+    
+#    candidateInput <- reactive({
+#      switch(input$candidate,
+#            
+#             "hillary_sentiment_scores" = hillary_sentiment_scores,
+#             "trump_sentiment_scores" = trump_sentiment_scores)
+#    })
     
     output$summary <- renderPrint({
         dataset <- datasetInput()
@@ -225,9 +255,9 @@ server <- function(input, output) {
     
     output$hillPlot <- renderPlot({
         
-        hillary_sentiment_scores %>%
+      hillary_sentiment_scores %>%
             ggplot(aes(x = sentiment)) +
-            geom_histogram(bins = 10, color = "white") +
+            geom_histogram(bins = input$binshill, color = "white") +
             labs(x = "Sentiment Score",
                  y = "Count",
                  subtitle = "Overall, Hillary is very neutral in her Tweets",
@@ -252,7 +282,7 @@ server <- function(input, output) {
         
         trump_sentiment_scores %>%
             ggplot(aes(x = sentiment)) +
-              geom_histogram(bins = 10, color = "white") +
+              geom_histogram(bins = input$binsdon, color = "white") +
               labs(x = "Sentiment Score",
                    y = "Count",
                    
