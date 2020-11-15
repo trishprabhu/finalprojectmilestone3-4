@@ -7,10 +7,6 @@ library(readr)
 library(sentimentr)
 library(tidyverse)
 library(ggthemes)
-library(DT)
-library(shinydashboard)
-library(shinydashboardPlus)
-library(ggvis)
 library(dplyr)
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
@@ -76,24 +72,23 @@ ui <- navbarPage(
                         On average, they are both relatively neutral on Twitter, 
                         but it's clear: Trump's Tweets see much more variation
                         in sentiment; by comparison, Clinton rarely reaches the 
-                        most extreme sentiment scores (1 and -1).")
-                    ),
-                    sidebarMenu(
-                      selectInput(inputId = "candidate", 
+                        most extreme sentiment scores (1 and -1)."),
+                    selectInput(inputId = "candidate", 
                                   label = "Choose a Twitter account:",
                                   choices = dataframe_options)),
                     mainPanel(
-                        plotOutput(outputId = "hillPlot"),
+                        plotOutput(outputId = "bothPlot"),
                         
-                        sliderInput("binshill", 
-                                    "Set the number of bins:",
-                                    min = 0, max = 50, value = 20
-                        ),
-                        plotOutput(outputId = "donPlot"),
-                        sliderInput("binsdon", 
+                        sliderInput("bins", 
                                     "Set the number of bins:",
                                     min = 0, max = 50, value = 20
                         )),
+#                      plotOutput(outputId = "donPlot"),
+                        
+#                       sliderInput("binsdon", 
+#                                   "Set the number of bins:",
+#                                    min = 0, max = 50, value = 20
+#                        )),
 #                 mainPanel(
 #                     tabsetPanel(type = "tab",
 #                                tabPanel("pdf", 
@@ -235,12 +230,12 @@ server <- function(input, output) {
                "Donald Trump" = trump_sentiment_scores)
     })
     
-#    candidateInput <- reactive({
-#      switch(input$candidate,
-#            
-#             "hillary_sentiment_scores" = hillary_sentiment_scores,
-#             "trump_sentiment_scores" = trump_sentiment_scores)
-#    })
+    candidateInput <- reactive({
+      switch(input$candidate,
+            
+             "hillary_sentiment_scores" = hillary_sentiment_scores,
+             "trump_sentiment_scores" = trump_sentiment_scores)
+    })
     
     output$summary <- renderPrint({
         dataset <- datasetInput()
@@ -251,17 +246,19 @@ server <- function(input, output) {
         head(datasetInput(), n = input$obs)
     })
     
-    hillsentimentmean <- mean(hillary_sentiment_scores$sentiment)
+#    hillsentimentmean <- mean(hillary_sentiment_scores$sentiment)
     
-    output$hillPlot <- renderPlot({
-        
-      hillary_sentiment_scores %>%
+    output$bothPlot <- renderPlot({
+      candidate <- candidateInput()
+      candidate %>%
             ggplot(aes(x = sentiment)) +
-            geom_histogram(bins = input$binshill, color = "white") +
+            geom_histogram(bins = input$bins, 
+                           color = "white",
+                           fill = "dodgerblue") +
             labs(x = "Sentiment Score",
                  y = "Count",
-                 subtitle = "Overall, Hillary is very neutral in her Tweets",
-                 title = "Sentiment Expressed In Clinton's Tweets",
+                 subtitle = "Overall, Hillary is very neutral in her Tweets; Trump is too, but with more variation",
+                 title = "Sentiment Expressed In Tweets",
                  caption = "Source: Trump Twitter Archive") +
             
 # I thought that explicitly graphing the mean of both Trump and Clinton's 
@@ -270,34 +267,34 @@ server <- function(input, output) {
 # neutral -- likely a result of Trump's more positive Tweets "canceling out"
 # his more negative Tweets).
             
-            geom_vline(xintercept = hillsentimentmean, 
+            geom_vline(xintercept = mean(candidate$sentiment), 
                        linetype = "dashed") +
-            theme_bw()
+            theme_classic()
         
     })
     
-    donsentimentmean <- mean(trump_sentiment_scores$sentiment)
+#    donsentimentmean <- mean(trump_sentiment_scores$sentiment)
     
-    output$donPlot <- renderPlot({
+#    output$donPlot <- renderPlot({
         
-        trump_sentiment_scores %>%
-            ggplot(aes(x = sentiment)) +
-              geom_histogram(bins = input$binsdon, color = "white") +
-              labs(x = "Sentiment Score",
-                   y = "Count",
+#       trump_sentiment_scores %>%
+#            ggplot(aes(x = sentiment)) +
+#              geom_histogram(bins = input$binsdon, color = "white") +
+#              labs(x = "Sentiment Score",
+#                   y = "Count",
                    
 # I know that the line below surpasses the 80 character limit, but cutting it
 # off was not aesthetically appealing on my graph. Apologies!
                    
-                   subtitle = "On average, Trump is too, but with much more variation -- both positive and negative",
-                   title = "Sentiment Expressed In Trump's Tweets",
-                   caption = "Source: Trump Twitter Archive") +
-            geom_vline(xintercept = donsentimentmean, 
-                       linetype = "dashed",
-                       label = "0.01336323") +
-            theme_bw()
+#                   subtitle = "On average, Trump is too, but with much more variation -- both positive and negative",
+#                   title = "Sentiment Expressed In Trump's Tweets",
+#                   caption = "Source: Trump Twitter Archive") +
+#            geom_vline(xintercept = donsentimentmean, 
+#                       linetype = "dashed",
+#                       label = "0.01336323") +
+#            theme_bw()
         
-    })
+ #   })
     
         
 #       output$newtabs <- renderUI({
