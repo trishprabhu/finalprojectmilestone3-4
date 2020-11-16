@@ -35,12 +35,12 @@ dataframe_options <-
 library(shinythemes)
 
 ui <- navbarPage(
-    "Trisha's Final Project Milestones",
-    tabPanel("Tweet Analysis",
-             fluidPage(theme = shinytheme("readable"),
-                 titlePanel("Sentiment Analysis"),
-                 sidebarLayout(
-                     sidebarPanel(
+  "Trisha's Final Project Milestones",
+  tabPanel("Tweet Analysis",
+           fluidPage(theme = shinytheme("readable"),
+                     titlePanel("Sentiment Analysis"),
+                     sidebarLayout(
+                       sidebarPanel(
                          selectInput(inputId = "dataset",
                                      label = "Choose a Twitter account:",
                                      choices = c("Hillary Clinton", 
@@ -52,39 +52,39 @@ ui <- navbarPage(
 # Originally, I just had a numericInput() box; at Dan's suggestion, I added a
 # slider, so folks who visit my Shiny App can more easily look at the desired
 # number of observations.
-                         
+                    
                          sliderInput("obs", 
-                         "Slide to the number of observations to view:",
-                         min = 0, max = 300, value = 30
-                             )),
-                     mainPanel(
+                                "Slide to the number of observations to view:",
+                                     min = 0, max = 300, value = 30
+                         )),
+                       mainPanel(
                          verbatimTextOutput("summary"),
-                         tableOutput("view"),
-                     )),
-
-# The sidebars were great spots to both 1) provide some context around the
-# graphics, and 2) align/style the page so that the graphs were aesthetically 
-# appealing.
-
-                    sidebarPanel(
-                        p("Here, I visualize the distributions
+                         tableOutput("view")
+                       )),
+                     
+                     # The sidebars were great spots to both 1) provide some context around the
+                     # graphics, and 2) align/style the page so that the graphs were aesthetically 
+                     # appealing.
+                     
+                     sidebarPanel(
+                       p("Here, I visualize the distributions
                         of Trump and Clinton's Tweets' sentiment scores (above). 
                         On average, they are both relatively neutral on Twitter, 
                         but it's clear: Trump's Tweets see much more variation
                         in sentiment; by comparison, Clinton rarely reaches the 
                         most extreme sentiment scores (1 and -1)."),
-                    selectInput(inputId = "candidate", 
-                                  label = "Choose a Twitter account:",
-                                  choices = dataframe_options)),
-                    mainPanel(
-                        plotOutput(outputId = "bothPlot"),
-                        
-                        sliderInput("bins", 
-                                    "Set the number of bins:",
-                                    min = 0, max = 50, value = 20
-                        )),
+                       selectInput(inputId = "candidate", 
+                                   label = "Choose a Twitter account:",
+                                   choices = dataframe_options)),
+                     mainPanel(
+                       plotOutput(outputId = "bothPlot"),
+                       
+                       sliderInput("bins", 
+                                   "Set the number of bins:",
+                                   min = 0, max = 50, value = 20
+                       )))),
 #                      plotOutput(outputId = "donPlot"),
-                        
+                     
 #                       sliderInput("binsdon", 
 #                                   "Set the number of bins:",
 #                                    min = 0, max = 50, value = 20
@@ -96,11 +96,10 @@ ui <- navbarPage(
 #                                                                 width: 100%; 
 #                                                                 scrolling = yes", 
 #                                                       src = "finalgraph.pdf"))))
-                )),
     tabPanel("Model",
              titlePanel("How/why does Trump's sentiment on Twitter change?"),
-             titlePanel("Approval Rating"),
              sidebarPanel(
+             titlePanel("Approval Rating"),
                p("Here, I look at Donald Trump's daily approval
                      ratings and Twitter sentiment scores (the average sentiment
                      of his Tweets on a given day) over a 1 month period -- 
@@ -112,11 +111,7 @@ ui <- navbarPage(
                      cautious in drawing any conclusions, though -- not only is 
                      the relationship relatively weak, this is also a relatively 
                      short period of time; a longer period (like 1 year) -- with 
-                     more datapoints -- would likely be more telling.")
-             ),
-             mainPanel(
-               plotOutput(outputId = "approvalSentiment")),
-             sidebarPanel(
+                     more datapoints -- would likely be more telling."),
                p("In this graph, we visualize the posterior distributions for
                  Trump's daily Twitter sentiment score in 3 hypothetical 
                  universes: one in which he has a 30% approval rating, one
@@ -131,14 +126,9 @@ ui <- navbarPage(
                  are less and more positive, respectively, the distributions are 
                  rather wide, so we wouldn't be surprised if the Trump with a 
                  30% approval rating had a positive daily Twitter sentiment 
-                 score."
-               )
-             ),
-             mainPanel(
-               plotOutput(outputId = "approvalPosterior")),
+                 score."),
              titlePanel("Stock Market"),
-             sidebarPanel(
-               p("Here, I look at daily stock market opening/closing differences
+             p("Here, I look at daily stock market opening/closing differences
                and Donald Trump's corresponding Twitter sentiment scores over a 
                1 month period (09/12 - 10/13). Interestingly, the S&P 500's 
                opening/closing differences and Trump's sentiment scores seem to 
@@ -153,13 +143,20 @@ ui <- navbarPage(
                While the relationship does seem to be very weak, we can still
                use this dependent variable as a control in our regression of
                Trump's sentiment scores on his approval ratings -- as we do 
-              below."
-               )
+              below."),
+             titlePanel("Interactive Regression Results"),
+             selectInput(inputId = "regressiontable",
+                         label = "Choose a variable:",
+                         choices = c("Approval Rating", 
+                                     "Stock Market",
+                                     "Both"))
              ),
              mainPanel(
-             plotOutput(outputId = "stockSentiment")),
-             titlePanel("Interactive Regression Results"),
-    ),
+               plotOutput(outputId = "approvalSentiment"),
+               plotOutput(outputId = "approvalPosterior"),
+               plotOutput(outputId = "stockSentiment"),
+               gt_output(outputId = "regressiontable"))
+             ),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("11/13 Status Report: This week, I began building the
@@ -377,7 +374,32 @@ server <- function(input, output) {
       stockgraph
       
     })
-  
+    
+    regressiontableInput <- reactive({
+     switch(input$regressiontable,
+             
+        "Approval Rating" = formula(finalstocktib$meanofmeans ~ finalstocktib$approval_ratings),
+        "Stock Market" = formula(finalstocktib$meanofmeans ~ finalstocktib$range),
+        "Both" = formula(finalstocktib$meanofmeans ~ finalstocktib$approval_ratings + finalstocktib$range))
+      
+    })
+    
+    output$regressiontable <- render_gt({
+      
+     formula <- regressiontableInput()
+      
+      fit_obj <- stan_glm(formula,
+                          data = finalstocktib, 
+                          family = gaussian(),
+                          refresh = 0)
+      
+      fit_obj %>%
+        tbl_regression() %>%
+        as_gt() %>%
+        tab_header(title = "Regression of Trump's Twitter Sentiment Scores") %>% 
+        tab_source_note("Source: Trump Twitter Archive") 
+      
+    }) 
     
 }
 

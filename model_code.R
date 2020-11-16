@@ -5,6 +5,7 @@ library(MASS)
 library(rstanarm)
 library(gt)
 library(gtsummary)
+library(broom.mixed)
 
 # Create a stan_glm model.
 
