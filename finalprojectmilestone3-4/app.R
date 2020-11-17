@@ -8,6 +8,7 @@ library(sentimentr)
 library(tidyverse)
 library(ggthemes)
 library(dplyr)
+library(DT)
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
@@ -38,7 +39,7 @@ ui <- navbarPage(
   "Trisha's Final Project Milestones",
   tabPanel("Tweet Analysis",
            fluidPage(theme = shinytheme("readable"),
-                     titlePanel("Sentiment Analysis"),
+                     titlePanel("Sentiment Analysis: A Glimpse"),
                      sidebarLayout(
                        sidebarPanel(
                          selectInput(inputId = "dataset",
@@ -68,7 +69,7 @@ ui <- navbarPage(
                      
                      sidebarPanel(
                        p("Here, I visualize the distributions
-                        of Trump and Clinton's Tweets' sentiment scores (above). 
+                        of Trump and Clinton's Tweets' sentiment scores. 
                         On average, they are both relatively neutral on Twitter, 
                         but it's clear: Trump's Tweets see much more variation
                         in sentiment; by comparison, Clinton rarely reaches the 
@@ -236,11 +237,23 @@ server <- function(input, output) {
     
     output$summary <- renderPrint({
         dataset <- datasetInput()
-        summary(dataset)
+        tib <- dataset %>%
+          rename("Tweets" = "element_id") # %>%
+#        group_by(Tweets) %>%
+#         summarize(sentimentmeans = mean(sentiment, na.rm = TRUE),
+#                    .groups = "drop")
+        summary(tib)
     })
     
     output$view <- renderTable({
-        head(datasetInput(), n = input$obs)
+        dataset <- datasetInput()
+        nicetib <- dataset %>%
+          rename("Tweets" = "element_id",
+                 "Sentence Number" = "sentence_id",
+                 "Word Count" = "word_count",
+                 "Sentiment" = "sentiment") 
+        
+        head(nicetib, n = input$obs)
     })
     
 #    hillsentimentmean <- mean(hillary_sentiment_scores$sentiment)
