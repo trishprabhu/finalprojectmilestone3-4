@@ -8,7 +8,6 @@ library(sentimentr)
 library(tidyverse)
 library(ggthemes)
 library(dplyr)
-library(DT)
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
@@ -238,7 +237,10 @@ server <- function(input, output) {
     output$summary <- renderPrint({
         dataset <- datasetInput()
         tib <- dataset %>%
-          rename("Tweets" = "element_id") # %>%
+          rename("Tweets" = "element_id",
+                 "Sentence Number" = "sentence_id",
+                 "Word Count" = "word_count",
+                 "Sentiment" = "sentiment") # %>%
 #        group_by(Tweets) %>%
 #         summarize(sentimentmeans = mean(sentiment, na.rm = TRUE),
 #                    .groups = "drop")
@@ -253,7 +255,7 @@ server <- function(input, output) {
                  "Word Count" = "word_count",
                  "Sentiment" = "sentiment") 
         
-        head(nicetib, n = input$obs)
+          head(nicetib, n = input$obs)
     })
     
 #    hillsentimentmean <- mean(hillary_sentiment_scores$sentiment)
