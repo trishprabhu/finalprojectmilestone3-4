@@ -1,14 +1,19 @@
 
 # Things To Do:
 
-# Include interactions
-# Include confidence intervals
-# Create readability scores for each of the Tweets; do Tweet analysis and add
-# to model
+# Include interactions in Model (partially complete; need to understand what
+# it means -- interpret?).
+# Include confidence intervals (done)!
+# Create readability scores for each of the Tweets; do Tweet analysis (done!) 
+# and add to model (still need to do).
 # Change first page to include Tweet and sentiment score; try to make it look
-# cool
-# Figure out how to get the decimal/reading in the other R scripts (email Dan)
+# cool (done)!
+# Figure out how to get the desired # of digits in the gt table (email Dan).
+# Figure out how to read in the other R scripts (email Dan).
+# Figure out to make the variable names professional throughout the project
+# (still need to do).
 # Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
+# (still need to do; low priority).
 
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
