@@ -65,17 +65,20 @@ ui <- navbarPage(
                          sliderInput("obs", 
                                 "Slide to the number of observations to view:",
                                      min = 0, max = 300, value = 30
-                         ),
-                        numericInput("tweetread", 
-                                    "Pick the Tweet you'd like to view:",
-                                    value = 5
-                        )),
+                         )),
                        mainPanel(
                          verbatimTextOutput("summary"),
                          tableOutput("view"),
-                         verbatimTextOutput("tweetread")
                        )),
-                     
+                      
+                      sidebarPanel(
+                        numericInput("tweetread", 
+                                     "Pick the Tweet you'd like to view:",
+                                     value = 5
+                        )),
+                    mainPanel(
+                      gt_output(outputId = "tweetread")
+                    ),
                      # The sidebars were great spots to both 1) provide some context around the
                      # graphics, and 2) align/style the page so that the graphs were aesthetically 
                      # appealing.
