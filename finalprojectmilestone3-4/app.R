@@ -434,17 +434,25 @@ server <- function(input, output) {
     
    output$tweetread <- render_gt({
       
-      nicetib <- tweetib1 %>%
-       filter(element_id == as.numeric(input$tweetread)) %>%
+      tweetib1 %>%
+       filter(element_id == input$tweetread) %>%
        ungroup() %>%
        select(text, sentimentmeans, Flesch) %>%
        rename("Tweet" = "text",
               "Sentiment" = "sentimentmeans",
-              "Readability" = "Flesch")
+              "Readability" = "Flesch") %>%
+       gt() %>%
+       tab_header(title = "Sentiment and Readability of Trump's Tweets", 
+                  subtitle = "Readability: 0 - 100, 100 is most readable; Sentiment: -1 to 1, 1 is most positive") %>% 
+       tab_source_note("Source: Trump Twitter Archive") %>%
+       tab_style(
+         style = list(
+           cell_fill(color = "lightgreen")
+         ),
+         locations = cells_body(
+           rows = Sentiment >= 0
+         ))
      
-     nicetib %>%
-       gt()
-
    })
     
 }

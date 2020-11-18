@@ -152,4 +152,23 @@ nicetib <- tweetib1 %>%
          "Readability" = "Flesch")
 
 nicetib %>%
-  gt()
+  gt() %>%
+  tab_header(title = "Sentiment and Readability of Trump's Tweets", 
+             subtitle = "Readability: 0 - 100, 100 is most readable; Sentiment: -1 to 1, 1 is most positive") %>% 
+  tab_source_note("Source: Trump Twitter Archive") %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgreen")
+    ),
+    locations = cells_body(
+      rows = Sentiment > 0)
+    ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "red")
+    ),
+    locations = cells_body(
+      rows = Sentiment < 0)
+  )
+
+
