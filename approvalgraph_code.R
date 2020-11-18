@@ -143,6 +143,13 @@ trump_join <- trump_read %>%
 
 tweetib1 <- inner_join(graphtib1, trump_join, by = "element_id")
 
-tweetib1 %>%
-  filter(element_id == 10) %>%
-  select(text, sentimentmeans, Flesch)
+nicetib <- tweetib1 %>%
+  filter(element_id == 50) %>%
+  ungroup() %>%
+  select(text, sentimentmeans, Flesch) %>%
+  rename("Tweet" = "text",
+         "Sentiment" = "sentimentmeans",
+         "Readability" = "Flesch")
+
+nicetib %>%
+  gt()

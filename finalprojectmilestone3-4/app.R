@@ -68,7 +68,7 @@ ui <- navbarPage(
                          ),
                         numericInput("tweetread", 
                                     "Pick the Tweet you'd like to view:",
-                                    value = 10
+                                    value = 5
                         )),
                        mainPanel(
                          verbatimTextOutput("summary"),
@@ -432,11 +432,18 @@ server <- function(input, output) {
     }) 
     
     
-   output$tweetread <- renderPrint({
+   output$tweetread <- render_gt({
       
-      tweetib1 %>%
-      filter(element_id == input$tweetread) %>%
-      select(text, sentimentmeans, Flesch)
+      nicetib <- tweetib1 %>%
+       filter(element_id == as.numeric(input$tweetread)) %>%
+       ungroup() %>%
+       select(text, sentimentmeans, Flesch) %>%
+       rename("Tweet" = "text",
+              "Sentiment" = "sentimentmeans",
+              "Readability" = "Flesch")
+     
+     nicetib %>%
+       gt()
 
    })
     
