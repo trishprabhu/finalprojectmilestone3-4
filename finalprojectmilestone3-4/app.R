@@ -1,4 +1,15 @@
 
+# Things To Do:
+
+# Include interactions
+# Include confidence intervals
+# Create readability scores for each of the Tweets; do Tweet analysis and add
+# to model
+# Change first page to include Tweet and sentiment score; try to make it look
+# cool
+# Figure out how to get the decimal/reading in the other R scripts (email Dan)
+# Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
+
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
 
@@ -25,10 +36,8 @@ trump_sentiment_scores <- sentiment(trumptweets$text[1:100])
 hillary_sentiment_scores <- sentiment(hillarytweets$text[1:100])
 
 dataframe_options <-
-  c(
-    "hillary_sentiment_scores",
-    "trump_sentiment_scores"
-  )
+  c("hillary_sentiment_scores",
+    "trump_sentiment_scores")
 
 # UI definition:
 
@@ -56,10 +65,15 @@ ui <- navbarPage(
                          sliderInput("obs", 
                                 "Slide to the number of observations to view:",
                                      min = 0, max = 300, value = 30
-                         )),
+                         ),
+                        numericInput("tweetread", 
+                                    "Pick the Tweet you'd like to view:",
+                                    value = 10
+                        )),
                        mainPanel(
                          verbatimTextOutput("summary"),
-                         tableOutput("view")
+                         tableOutput("view"),
+                         verbatimTextOutput("tweetread")
                        )),
                      
                      # The sidebars were great spots to both 1) provide some context around the
@@ -149,7 +163,7 @@ ui <- navbarPage(
                          label = "Choose a variable:",
                          choices = c("Approval Rating", 
                                      "Stock Market",
-                                     "Both"))
+                                     "Interaction"))
              ),
              mainPanel(
                plotOutput(outputId = "approvalSentiment"),
@@ -325,7 +339,7 @@ server <- function(input, output) {
         finalgraphtib %>%
             ggplot(aes(x = approval_ratings, y = meanofmeans)) +
             geom_point() +
-            geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+            geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
             
 # I know that the lines below surpasses the 80 character limit, but cutting them
 # off was not aesthetically appealing on my graph. Apologies!
@@ -374,7 +388,7 @@ server <- function(input, output) {
       stockgraph <- finalstocktib %>%
         ggplot(aes(x = range, y = meanofmeans)) +
         geom_point() +
-        geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+        geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
         
 # I know that the lines below surpasses the 80 character limit, but cutting them
 # off was not aesthetically appealing on my graph. Apologies!
@@ -395,7 +409,7 @@ server <- function(input, output) {
              
         "Approval Rating" = formula(finalstocktib$meanofmeans ~ finalstocktib$approval_ratings),
         "Stock Market" = formula(finalstocktib$meanofmeans ~ finalstocktib$range),
-        "Both" = formula(finalstocktib$meanofmeans ~ finalstocktib$approval_ratings + finalstocktib$range))
+        "Interaction" = formula(finalstocktib$meanofmeans ~ finalstocktib$approval_ratings * finalstocktib$range))
       
     })
     
@@ -403,6 +417,7 @@ server <- function(input, output) {
       
      formula <- regressiontableInput()
       
+      set.seed(10)
       fit_obj <- stan_glm(formula,
                           data = finalstocktib, 
                           family = gaussian(),
@@ -415,6 +430,15 @@ server <- function(input, output) {
         tab_source_note("Source: Trump Twitter Archive") 
       
     }) 
+    
+    
+   output$tweetread <- renderPrint({
+      
+      tweetib1 %>%
+      filter(element_id == input$tweetread) %>%
+      select(text, sentimentmeans, Flesch)
+
+   })
     
 }
 

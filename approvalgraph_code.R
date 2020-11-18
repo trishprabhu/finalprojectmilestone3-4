@@ -12,6 +12,8 @@ library(sentimentr)
 library(tidyverse)
 library(readr)
 library(ggthemes)
+library(quanteda)
+library(gt)
 
 
 # Load the lubridate library; use as.Date to create a new column with the
@@ -125,3 +127,22 @@ finalgraph <- finalgraphtib %>%
   theme_bw()
 
 finalgraph
+
+# Add readability scores to graphtib1 -- creating tweettib1.
+
+text <- graphtib1$text
+
+trump_read <- textstat_readability(text,
+                     measure = "Flesch",
+                     remove_hyphens = TRUE,
+                     min_sentence_length = 1,
+                     max_sentence_length = 10000) 
+
+trump_join <- trump_read %>%
+  mutate(element_id = 1:1264)
+
+tweetib1 <- inner_join(graphtib1, trump_join, by = "element_id")
+
+tweetib1 %>%
+  filter(element_id == 10) %>%
+  select(text, sentimentmeans, Flesch)
