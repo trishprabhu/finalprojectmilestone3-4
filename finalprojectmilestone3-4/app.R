@@ -14,6 +14,9 @@
 # (still need to do).
 # Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
 # (still need to do; low priority).
+# Solidify interpretation of histogram on "Tweet Analysis" page (still need
+# to do).
+# Create separate "Readability" page (unsure if going to do).
 
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
