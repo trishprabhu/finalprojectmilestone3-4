@@ -450,8 +450,15 @@ server <- function(input, output) {
            cell_fill(color = "lightgreen")
          ),
          locations = cells_body(
-           rows = Sentiment >= 0
-         ))
+           rows = Sentiment > 0)
+       ) %>%
+       tab_style(
+         style = list(
+           cell_fill(color = "red")
+         ),
+         locations = cells_body(
+           rows = Sentiment < 0)
+       )
      
    })
     
