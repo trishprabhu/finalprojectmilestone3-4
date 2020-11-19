@@ -216,7 +216,7 @@ print(fit_obj, view = FALSE, digits = 5)
 # in Tweets.
 
 tweetgraph <- tweetib1 %>%
-  ggplot(aes(x = Flesch, y = sentimentmeans)) +
+  ggplot(aes(x = Flesch, y = sentimentmeans, color = str_length(text))) +
   geom_point() +
   geom_label_repel(aes(label = ifelse(str_length(text) < 35, as.character(text),'')),
                    box.padding   = 0.35, 
@@ -227,7 +227,8 @@ tweetgraph <- tweetib1 %>%
        subtitle = "Readability has little relationship with Trump's sentiment on Twitter",
        x = "Readability (0 - 100; 0 is the least readable)",
        y = "Sentiment Score",
-       caption = "Source: Trump Twitter Archive") +
+       caption = "Source: Trump Twitter Archive",
+       color = "Character Count") +
   xlim(0, 100) +
   ylim(-1, 1) +
   theme_bw()
@@ -242,3 +243,27 @@ Flesch_obj <- stan_glm(sentimentmeans ~ Flesch,
 
 print(Flesch_obj, view = FALSE, digits = 5)
 
+# Let's create a model looking at regressing sentiment in Tweets on character
+# count.
+
+character_obj <- stan_glm(sentimentmeans ~ str_length(text),
+                       data = tweetib1, 
+                       refresh = 0)
+
+print(character_obj, view = FALSE, digits = 5)
+
+# Create a visualization of the relationship between character count and sentiment
+# in Tweets.
+
+charactergraph <- tweetib1 %>%
+  ggplot(aes(x = str_length(text), y = sentimentmeans)) +
+  geom_point() +
+  geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
+  labs(title = "Character Count and Sentiment of Trump's Tweets (09/12/20 - 10/13/20)",
+       subtitle = "",
+       x = "Character Count",
+       y = "Sentiment Score",
+       caption = "Source: Trump Twitter Archive") +
+  theme_bw()
+
+charactergraph

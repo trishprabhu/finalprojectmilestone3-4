@@ -18,6 +18,7 @@
 # Solidify interpretation of histogram on "Tweet Analysis" page (still need
 # to do).
 # Create separate "Readability" page (unsure if going to do).
+# Create a Word Cloud!
 
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
@@ -521,7 +522,8 @@ server <- function(input, output) {
             subtitle = "Readability has little relationship with Trump's sentiment on Twitter",
             x = "Readability (0 - 100; 0 is the least readable)",
             y = "Sentiment Score",
-            caption = "Source: Trump Twitter Archive") +
+            caption = "Source: Trump Twitter Archive",
+            color = "Character Count") +
        xlim(0, 100) +
        ylim(-1, 1) +
        theme_bw()
