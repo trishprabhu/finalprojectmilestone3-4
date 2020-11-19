@@ -5,7 +5,7 @@
 # it means -- interpret?).
 # Include confidence intervals (done)!
 # Create readability scores for each of the Tweets; do Tweet analysis (done!) 
-# and add to model (still need to do).
+# and add to model (done).
 # Change first page to include Tweet and sentiment score; try to make it look
 # cool (done)!
 # Figure out how to get the desired # of digits in the gt table (email Dan/
@@ -510,7 +510,7 @@ server <- function(input, output) {
    output$readability <- renderPlot({
      
      tweetgraph <- tweetib1 %>%
-       ggplot(aes(x = Flesch, y = sentimentmeans)) +
+       ggplot(aes(x = Flesch, y = sentimentmeans, color = str_length(text))) +
        geom_point() +
        geom_label_repel(aes(label = ifelse(str_length(text) < 35, as.character(text),'')),
                         box.padding   = 0.35, 
