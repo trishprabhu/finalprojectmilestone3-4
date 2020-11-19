@@ -8,7 +8,8 @@
 # and add to model (still need to do).
 # Change first page to include Tweet and sentiment score; try to make it look
 # cool (done)!
-# Figure out how to get the desired # of digits in the gt table (email Dan).
+# Figure out how to get the desired # of digits in the gt table (email Dan/
+# still need to do).
 # Figure out how to read in the other R scripts (email Dan).
 # Figure out to make the variable names professional throughout the project
 # (still need to do).

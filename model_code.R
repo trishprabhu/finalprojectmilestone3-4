@@ -6,6 +6,7 @@ library(rstanarm)
 library(gt)
 library(gtsummary)
 library(broom.mixed)
+library(ggrepel)
 
 # Create a stan_glm model.
 
@@ -209,3 +210,35 @@ fit_obj <- stan_glm(meanofmeans ~ approval_ratings + range,
                     refresh = 0)
 
 print(fit_obj, view = FALSE, digits = 5)
+
+
+# Create a visualization of the relationship between readability and sentiment
+# in Tweets.
+
+tweetgraph <- tweetib1 %>%
+  ggplot(aes(x = Flesch, y = sentimentmeans)) +
+  geom_point() +
+  geom_label_repel(aes(label = text),
+                   box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') +
+  geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
+  labs(title = "Readability and Sentiment of Trump's Tweets (09/12/20 - 10/13/20)",
+       subtitle = "Readability has little relationship with Trump's sentiment on Twitter",
+       x = "Readability (0 - 100; 0 is the least readable)",
+       y = "Sentiment Score",
+       caption = "Source: Trump Twitter Archive") +
+  xlim(0, 100) +
+  ylim(-1, 1) +
+  theme_bw()
+
+tweetgraph
+
+# Let's create a model looking at regressing sentiment in Tweets on readability.
+
+Flesch_obj <- stan_glm(sentimentmeans ~ Flesch,
+                    data = tweetib1, 
+                    refresh = 0)
+
+print(Flesch_obj, view = FALSE, digits = 5)
+
