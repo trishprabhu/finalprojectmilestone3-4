@@ -218,7 +218,7 @@ print(fit_obj, view = FALSE, digits = 5)
 tweetgraph <- tweetib1 %>%
   ggplot(aes(x = Flesch, y = sentimentmeans)) +
   geom_point() +
-  geom_label_repel(aes(label = text),
+  geom_label_repel(aes(label = ifelse(str_length(text) < 35, as.character(text),'')),
                    box.padding   = 0.35, 
                    point.padding = 0.5,
                    segment.color = 'grey50') +

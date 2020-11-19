@@ -143,6 +143,9 @@ trump_join <- trump_read %>%
 
 tweetib1 <- inner_join(graphtib1, trump_join, by = "element_id")
 
+tweetib1 <- tweetib1 %>%
+  filter(sentimentmeans < 0 | sentimentmeans > 0)
+
 nicetib <- tweetib1 %>%
   filter(element_id == 50) %>%
   ungroup() %>%
