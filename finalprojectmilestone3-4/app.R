@@ -79,7 +79,10 @@ ui <- navbarPage(
                          verbatimTextOutput("summary"),
                          tableOutput("view"),
                        )),
-                      
+                      br(),
+                      br(),
+                      br(),
+                      br(),
                       sidebarPanel(
                         numericInput("tweetread", 
                                      "Pick the Tweet you'd like to view:",
@@ -91,7 +94,7 @@ ui <- navbarPage(
                      # The sidebars were great spots to both 1) provide some context around the
                      # graphics, and 2) align/style the page so that the graphs were aesthetically 
                      # appealing.
-                     
+
                      sidebarPanel(
                        p("Here, I visualize the distributions
                         of Trump and Clinton's Tweets' sentiment scores. 
@@ -102,7 +105,11 @@ ui <- navbarPage(
                        selectInput(inputId = "candidate", 
                                    label = "Choose a Twitter account:",
                                    choices = dataframe_options)),
-                     mainPanel(
+            mainPanel(
+                      br(),
+                      br(),
+                      br(),
+                      br(),
                        plotOutput(outputId = "bothPlot"),
                        
                        sliderInput("bins", 
@@ -153,6 +160,8 @@ ui <- navbarPage(
                  rather wide, so we wouldn't be surprised if the Trump with a 
                  30% approval rating had a positive daily Twitter sentiment 
                  score."),
+             br(),
+             br(),
              titlePanel("Stock Market"),
              p("Here, I look at daily stock market opening/closing differences
                and Donald Trump's corresponding Twitter sentiment scores over a 
@@ -170,18 +179,42 @@ ui <- navbarPage(
                use this dependent variable as a control in our regression of
                Trump's sentiment scores on his approval ratings -- as we do 
               below."),
+             br(),
+             br(),
              titlePanel("Interactive Regression Results"),
              selectInput(inputId = "regressiontable",
                          label = "Choose a variable:",
                          choices = c("Approval Rating", 
                                      "Stock Market",
-                                     "Interaction"))
-             ),
+                                     "Interaction")),
+             br(),
+             br(),
+             titlePanel("Readability"),
+             p("Here, I look at the relationship between the readability of
+               Donald Trump's Tweets and the sentiment of those Tweets.
+               Interestingly, readability seems to have close to no relationship 
+               with sentiment; regression results confirm this. The
+               visualization does pull out another trend, however; by only
+               displaying the text for those Tweets below a certain length
+               of characters, it becomes clear that Trump tends to write
+               shorter Tweets when those Tweets are more positive. Clearly,
+               he doesn't like to brag!")),
              mainPanel(
                plotOutput(outputId = "approvalSentiment"),
                plotOutput(outputId = "approvalPosterior"),
+               br(),
+               br(),
                plotOutput(outputId = "stockSentiment"),
-               gt_output(outputId = "regressiontable"))
+               br(),
+               br(),
+               br(),
+               br(),
+               gt_output(outputId = "regressiontable"),
+               br(),
+               br(),
+               br(),
+               br(),
+               plotOutput(outputId = "readability"))
              ),
     tabPanel("Discussion",
              titlePanel("About The Data"),
@@ -471,6 +504,29 @@ server <- function(input, output) {
          locations = cells_body(
            rows = Sentiment < 0)
        )
+     
+   })
+   
+   output$readability <- renderPlot({
+     
+     tweetgraph <- tweetib1 %>%
+       ggplot(aes(x = Flesch, y = sentimentmeans)) +
+       geom_point() +
+       geom_label_repel(aes(label = ifelse(str_length(text) < 35, as.character(text),'')),
+                        box.padding   = 0.35, 
+                        point.padding = 0.5,
+                        segment.color = 'grey50') +
+       geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
+       labs(title = "Readability and Sentiment of Trump's Tweets (09/12/20 - 10/13/20)",
+            subtitle = "Readability has little relationship with Trump's sentiment on Twitter",
+            x = "Readability (0 - 100; 0 is the least readable)",
+            y = "Sentiment Score",
+            caption = "Source: Trump Twitter Archive") +
+       xlim(0, 100) +
+       ylim(-1, 1) +
+       theme_bw()
+     
+     tweetgraph
      
    })
     
