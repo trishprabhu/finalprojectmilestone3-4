@@ -56,7 +56,7 @@ library(shinythemes)
 ui <- navbarPage(
   "Trisha's Final Project Milestones",
   tabPanel("Tweet Analysis",
-           fluidPage(theme = shinytheme("readable"),
+           fluidPage(theme = shinytheme("cerulean"),
                      titlePanel("Sentiment Analysis: A Glimpse"),
                      sidebarLayout(
                        sidebarPanel(
@@ -163,6 +163,12 @@ ui <- navbarPage(
                  score."),
              br(),
              br(),
+             br(),
+             br(),
+             br(),
+             br(),
+             br(),
+             br(),
              titlePanel("Stock Market"),
              p("Here, I look at daily stock market opening/closing differences
                and Donald Trump's corresponding Twitter sentiment scores over a 
@@ -182,12 +188,18 @@ ui <- navbarPage(
               below."),
              br(),
              br(),
+             br(),
+             br(),
              titlePanel("Interactive Regression Results"),
              selectInput(inputId = "regressiontable",
                          label = "Choose a variable:",
                          choices = c("Approval Rating", 
                                      "Stock Market",
                                      "Interaction")),
+             br(),
+             br(),
+             br(),
+             br(),
              br(),
              br(),
              titlePanel("Readability"),
@@ -203,11 +215,7 @@ ui <- navbarPage(
              mainPanel(
                plotOutput(outputId = "approvalSentiment"),
                plotOutput(outputId = "approvalPosterior"),
-               br(),
-               br(),
                plotOutput(outputId = "stockSentiment"),
-               br(),
-               br(),
                br(),
                br(),
                gt_output(outputId = "regressiontable"),
@@ -217,6 +225,18 @@ ui <- navbarPage(
                br(),
                plotOutput(outputId = "readability"))
              ),
+    tabPanel("Visualization",
+             titlePanel("Word Cloud"),
+             sidebarLayout(
+               sidebarPanel(
+                 radioButtons(
+                   inputId = "source",
+                   label = "Pick a candidate:",
+                   choices = c(
+                     "Hillary Clinton; 2016" = "hill16",
+                     "Donald Trump; 2020" = "don20")
+                 )),
+             mainPanel(wordcloud2Output("cloud")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("11/13 Status Report: This week, I began building the
@@ -531,6 +551,50 @@ server <- function(input, output) {
      tweetgraph
      
    })
+   
+   data_source <- reactive({
+     
+     if (input$source == "hill16") {
+       data <- hillarytweets$text[1:100]
+     } else if (input$source == "don20") {
+       data <- trumptweets$text[1:100]
+     return(data)
+     }
+     
+   })
+   
+create_wordcloud <- function(data, num_words = 100, background = "white") {
+  
+  if (is.character(data)) {
+    corpus <- Corpus(VectorSource(data))
+    corpus <- tm_map(corpus, tolower)
+    corpus <- tm_map(corpus, removePunctuation)
+    corpus <- tm_map(corpus, removeNumbers)
+    corpus <- tm_map(corpus, removeWords, stopwords(tolower(input$language)))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove1))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove2))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove3))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove4))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove5))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove6))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove7))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove8))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove9))
+    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove10))
+    tdm <- as.matrix(TermDocumentMatrix(corpus))
+    data <- sort(rowSums(tdm), decreasing = TRUE)
+    data <- data.frame(word = names(data), freq = as.numeric(data))
+  }
+  
+  # Grab the top n most common words
+  data <- head(data, n = num_words)
+  if (nrow(data) == 0) {
+    return(NULL)
+  }
+  
+  wordcloud2(data, backgroundColor = background)
+  
+}
     
 }
 
