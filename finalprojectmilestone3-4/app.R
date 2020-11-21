@@ -496,10 +496,15 @@ server <- function(input, output) {
                           refresh = 0)
       
       fit_obj %>%
-        tbl_regression() %>%
-        as_gt() %>%
-        fmt_number(columns = 2,
-                   decimals = 2) %>%
+        tidy() %>%
+        gt() %>%
+#        tbl_regression() %>%
+#        as_gt() %>%
+#        fmt_number(columns = 2,
+#                   decimals = 2) %>%
+        cols_label(term = "Predictor",
+                   estimate = "Estimate",
+                   std.error = "Standard Error") %>%
         tab_header(title = "Regression of Trump's Twitter Sentiment Scores") %>% 
         tab_source_note("Source: Trump Twitter Archive") 
       
