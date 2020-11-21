@@ -497,14 +497,18 @@ server <- function(input, output) {
       
       fit_obj %>%
         tidy() %>%
+        mutate(confidencelow = estimate - (std.error * 2)) %>%
+        mutate(confidencehigh = estimate + (std.error * 2)) %>%
         gt() %>%
-#        tbl_regression() %>%
-#        as_gt() %>%
-#        fmt_number(columns = 2,
+#       tbl_regression() %>%
+#       as_gt() %>%
+#       fmt_number(columns = 2,
 #                   decimals = 2) %>%
         cols_label(term = "Predictor",
-                   estimate = "Estimate",
-                   std.error = "Standard Error") %>%
+                   estimate = "Beta",
+                   std.error = "Standard Error",
+                   confidencelow = "CI Low",
+                   confidencehigh = "CI High") %>%
         tab_header(title = "Regression of Trump's Twitter Sentiment Scores") %>% 
         tab_source_note("Source: Trump Twitter Archive") 
       
