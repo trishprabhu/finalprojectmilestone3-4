@@ -482,7 +482,6 @@ server <- function(input, output) {
         "Approval Rating" = formula(finalstocktib$meanofmeans ~ finalstocktib$approval_ratings),
         "Stock Market" = formula(finalstocktib$meanofmeans ~ finalstocktib$range),
         "Interaction" = formula(finalstocktib$meanofmeans ~ finalstocktib$approval_ratings * finalstocktib$range))
-      
     })
     
     output$regressiontable <- render_gt({
@@ -499,6 +498,7 @@ server <- function(input, output) {
         tidy() %>%
         mutate(confidencelow = estimate - (std.error * 2)) %>%
         mutate(confidencehigh = estimate + (std.error * 2)) %>%
+#        mutate(term = recode(term, regressiontableInput = "Formula")) %>%
         gt() %>%
 #       tbl_regression() %>%
 #       as_gt() %>%
