@@ -29,6 +29,9 @@ library(sentimentr)
 library(tidyverse)
 library(ggthemes)
 library(dplyr)
+library(colourpicker)
+library(wordcloud2)
+library(tm)
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
@@ -235,7 +238,10 @@ ui <- navbarPage(
                    choices = c(
                      "Hillary Clinton; 2016" = "hill16",
                      "Donald Trump; 2020" = "don20")
-                 )),
+                 ),
+                 numericInput("num", "Maximum number of words",
+                              value = 100, min = 5),
+                 colourInput("col", "Background color", value = "white")),
              mainPanel(wordcloud2Output("cloud")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
@@ -492,6 +498,8 @@ server <- function(input, output) {
       fit_obj %>%
         tbl_regression() %>%
         as_gt() %>%
+        fmt_number(columns = 2,
+                   decimals = 2) %>%
         tab_header(title = "Regression of Trump's Twitter Sentiment Scores") %>% 
         tab_source_note("Source: Trump Twitter Archive") 
       
@@ -586,6 +594,11 @@ create_wordcloud <- function(data, num_words = 100, background = "white") {
     data <- data.frame(word = names(data), freq = as.numeric(data))
   }
   
+  # Make sure a proper num_words is provided
+  if (!is.numeric(num_words) || num_words < 3) {
+    num_words <- 3
+  }
+  
   # Grab the top n most common words
   data <- head(data, n = num_words)
   if (nrow(data) == 0) {
@@ -594,7 +607,15 @@ create_wordcloud <- function(data, num_words = 100, background = "white") {
   
   wordcloud2(data, backgroundColor = background)
   
-}
+  }
+
+
+output$cloud <- renderWordcloud2({
+  create_wordcloud(data_source(),
+                   num_words = input$num,
+                   background = input$col)
+  
+  })
     
 }
 
