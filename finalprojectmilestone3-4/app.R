@@ -498,7 +498,7 @@ server <- function(input, output) {
         tidy() %>%
         mutate(confidencelow = estimate - (std.error * 2)) %>%
         mutate(confidencehigh = estimate + (std.error * 2)) %>%
-#        mutate(term = recode(term, regressiontableInput = "Formula")) %>%
+#       mutate(term = recode(term, regressiontableInput = "Formula")) %>%
         gt() %>%
 #       tbl_regression() %>%
 #       as_gt() %>%
