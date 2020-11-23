@@ -19,7 +19,7 @@
 # to do).
 # Create separate "Readability" page (done)!.
 # Create a Word Cloud (done)!
-# Create another graph for the visualization section (still need to do)!
+# Improve graph for the visualization section (still need to do)!
 
 
 # Download relevant libraries, including the sentimentr library, so I can
