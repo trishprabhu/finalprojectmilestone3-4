@@ -9,7 +9,8 @@
 # Change first page to include Tweet and sentiment score; try to make it look
 # cool (done)!
 # Figure out how to get the desired # of digits in the gt table (done!).
-# Figure out how to read in the other R scripts (done!).
+# Figure out how to read in the other R scripts (not working... -- need Dan's
+# help).
 # Figure out to make the variable names professional throughout the project
 # (still need to do).
 # Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
@@ -256,9 +257,18 @@ ui <- navbarPage(
                      "Hillary Clinton; 2016" = "hill16",
                      "Donald Trump; 2020" = "don20")
                  ),
-                 numericInput("num", "Maximum number of words",
+                 numericInput("num", "Maximum number of words:",
                               value = 100, min = 5),
-                 colourInput("col", "Background color", value = "white")),
+                 colourInput("col", "Background Color:", value = "white"),
+                 selectInput(
+                   inputId = "language",
+                   label = "Remove stopwords (e.g. and, the) in:",
+                   choices = c("Danish", "Dutch", "English", "Finnish", 
+                               "French", "German", "Hungarian", "Italian", 
+                               "Norwegian", "Portuguese", "Russian", "Spanish", 
+                               "Swedish"),
+                   multiple = FALSE,
+                   selected = "English")),
              mainPanel(wordcloud2Output("cloud")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
@@ -604,7 +614,7 @@ create_wordcloud <- function(data, num_words = 100, background = "white") {
     corpus <- tm_map(corpus, tolower)
     corpus <- tm_map(corpus, removePunctuation)
     corpus <- tm_map(corpus, removeNumbers)
-#    corpus <- tm_map(corpus, removeWords, stopwords(tolower(input$language)))
+    corpus <- tm_map(corpus, removeWords, stopwords(tolower(input$language)))
 #    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove1))
 #    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove2))
 #    corpus <- tm_map(corpus, removeWords, c(input$words_to_remove3))
