@@ -67,8 +67,8 @@ trump_sentiment_scores <- sentiment(trumptweets$text[1:100])
 hillary_sentiment_scores <- sentiment(hillarytweets$text[1:100])
 
 dataframe_options <-
-  c("hillary_sentiment_scores",
-    "trump_sentiment_scores")
+  c("Hillary Clinton",
+    "Donald Trump")
 
 # UI definition:
 
@@ -268,8 +268,13 @@ ui <- navbarPage(
                                "Norwegian", "Portuguese", "Russian", "Spanish", 
                                "Swedish"),
                    multiple = FALSE,
-                   selected = "English")),
-             mainPanel(wordcloud2Output("cloud")))),
+                   selected = "English"),
+                 selectInput(inputId = "hist",
+                             label = "Choose a candidate:",
+                             choices = c("Hillary Clinton", 
+                                         "Donald Trump"))),
+             mainPanel(wordcloud2Output("cloud"),
+                       plotOutput(outputId = "char")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("11/13 Status Report: This week, I began building the
@@ -343,8 +348,8 @@ server <- function(input, output) {
     candidateInput <- reactive({
       switch(input$candidate,
             
-             "hillary_sentiment_scores" = hillary_sentiment_scores,
-             "trump_sentiment_scores" = trump_sentiment_scores)
+             "Hillary Clinton" = hillary_sentiment_scores,
+             "Donald Trump" = trump_sentiment_scores)
     })
     
     output$summary <- renderPrint({
@@ -652,6 +657,31 @@ output$cloud <- renderWordcloud2({
                    background = input$col)
   
   })
+
+  histInput <- reactive({
+  switch(input$hist,
+         
+         "Hillary Clinton" = hillary_sentiment_scores,
+         "Donald Trump" = trump_sentiment_scores)
+   })
+
+   output$char <- renderPlot({
+     
+     characterhist <- input$hist %>%
+       ggplot(aes(x = str_length(text))) +
+       geom_histogram(binwidth = 20,
+                      color = "white",
+                      fill = "darkslategray2") +
+       labs(title = "Character Count of Candidate's Tweets (09/12/20 - 10/13/20)",
+            subtitle = "",
+            x = "Character Count",
+            y = "Frequency",
+            caption = "Source: Trump Twitter Archive") +
+       theme_classic()
+     
+     characterhist 
+  
+   })
     
 }
 
