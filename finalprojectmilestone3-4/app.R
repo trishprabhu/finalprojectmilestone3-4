@@ -280,6 +280,12 @@ ui <- navbarPage(
                              choices = c("Hillary Clinton", 
                                          "Donald Trump"))),
              mainPanel(wordcloud2Output("cloud"),
+                       br(),
+                       br(),
+                       br(),
+                       br(),
+                       br(),
+                       br(),
                        plotOutput(outputId = "char")))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
@@ -667,8 +673,8 @@ output$cloud <- renderWordcloud2({
   histInput <- reactive({
   switch(input$hist,
          
-         "Hillary Clinton" = hillarytweets$text,
-         "Donald Trump" = trumptweets$text[1:100])
+         "Hillary Clinton" = hillarytweets,
+         "Donald Trump" = trumptweets)
    })
 
    output$char <- renderPlot({
@@ -685,6 +691,7 @@ output$cloud <- renderWordcloud2({
             x = "Character Count",
             y = "Frequency",
             caption = "Source: Trump Twitter Archive") +
+       xlim(0, 300) +
        theme_classic()
      
      characterhist 
