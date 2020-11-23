@@ -67,7 +67,7 @@ approvalratingdistribution
 # Read in stock data (another variable that could potentially influence Trump's
 # daily Twitter score/can serve as a control).
 
-stock_data <- read_csv("current_stock_data.csv")
+stock_data <- read_csv("finalprojectmilestone3-4/current_stock_data.csv")
 
 # (Substantially) clean (yikes!) and subset the data to the relevant date range.
 
@@ -267,3 +267,39 @@ charactergraph <- tweetib1 %>%
   theme_bw()
 
 charactergraph
+
+# Create a visualization of the relationship between character count and readability
+# in Tweets.
+
+charactergraph2 <- tweetib1 %>%
+  ggplot(aes(x = Flesch, y = str_length(text))) +
+  geom_point() +
+  geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
+  labs(title = "Readability and Character Count of Trump's Tweets (09/12/20 - 10/13/20)",
+       subtitle = "",
+       x = "Readability",
+       y = "Character Count",
+       caption = "Source: Trump Twitter Archive") +
+  theme_bw()
+
+charactergraph2
+
+# Create a visualization of character count for both Donald Trump and Hillary
+# Clinton.
+
+characterhist <- tweetib1 %>%
+  ggplot(aes(x = str_length(text))) +
+  geom_histogram(binwidth = 20,
+                 color = "white") +
+  labs(title = "Character Count of Trump's Tweets (09/12/20 - 10/13/20)",
+       subtitle = "",
+       x = "Character Count",
+       y = "Frequency",
+       caption = "Source: Trump Twitter Archive") +
+  theme_classic()
+
+characterhist 
+
+# Write RDS.
+
+write_rds(finalstocktib, "model_code.rds")

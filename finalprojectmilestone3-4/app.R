@@ -16,8 +16,10 @@
 # (still need to do; low priority).
 # Solidify interpretation of histogram on "Tweet Analysis" page (still need
 # to do).
-# Create separate "Readability" page (unsure if going to do).
+# Create separate "Readability" page (done)!.
 # Create a Word Cloud (done)!
+# Create a graph looking at the number of Tweets by day for both Clinton/Trump!
+
 
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
@@ -31,6 +33,20 @@ library(dplyr)
 library(colourpicker)
 library(wordcloud2)
 library(tm)
+library(gt)
+library(magrittr)
+library(dplyr)
+library(ggthemes)
+library(quanteda)
+library(MASS)
+library(rstanarm)
+library(gtsummary)
+library(broom.mixed)
+library(ggrepel)
+
+# Save the needed tibbles as an rds.
+
+finalstocktib <- read_rds("model_code.rds")
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
@@ -228,7 +244,7 @@ ui <- navbarPage(
                plotOutput(outputId = "readability"))
              ),
     tabPanel("Visualization",
-             titlePanel("Word Cloud"),
+             titlePanel("Tweet Word Cloud"),
              sidebarLayout(
                sidebarPanel(
                  radioButtons(

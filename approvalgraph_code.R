@@ -174,4 +174,3 @@ nicetib %>%
       rows = Sentiment < 0)
   )
 
-
