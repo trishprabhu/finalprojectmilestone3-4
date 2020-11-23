@@ -174,3 +174,7 @@ nicetib %>%
       rows = Sentiment < 0)
   )
 
+# Write RDS.
+
+# write_rds(finalgraphtib, "finalgraphtib_code.rds")
+# write_rds(tweetib1, "tweetib1_code.rds")

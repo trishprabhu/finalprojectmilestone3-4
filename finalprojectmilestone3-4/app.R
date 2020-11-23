@@ -9,7 +9,7 @@
 # Change first page to include Tweet and sentiment score; try to make it look
 # cool (done)!
 # Figure out how to get the desired # of digits in the gt table (done!).
-# Figure out how to read in the other R scripts (email Dan).
+# Figure out how to read in the other R scripts (done!).
 # Figure out to make the variable names professional throughout the project
 # (still need to do).
 # Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
@@ -18,7 +18,7 @@
 # to do).
 # Create separate "Readability" page (done)!.
 # Create a Word Cloud (done)!
-# Create a graph looking at the number of Tweets by day for both Clinton/Trump!
+# Create another graph for the visualization section (still need to do)!
 
 
 # Download relevant libraries, including the sentimentr library, so I can
@@ -44,17 +44,19 @@ library(gtsummary)
 library(broom.mixed)
 library(ggrepel)
 
-# Save the needed tibbles as an rds.
+# Save the needed tibbles from the R scripts as rds's.
 
-finalstocktib <- read_rds("model_code.rds")
+# finalstocktib <- read_rds("finalstocktib_code.rds")
+# finalgraphtib <- read_rds("finalgraphtib_code.rds")
+# tweetib1 <- read_rds("tweetib1_code.rds")
+
+# Reading in the data.
 
 trumptweets <- read_csv("Trump_tweets (1).csv")
 summary(trumptweets)
 
 hillarytweets <- read_csv("hillarytweets.csv")
 summary(hillarytweets)
-
-# source("graph_code.R")
 
 # Rather than calculate sentiment scores for all of the Tweets (thousands of
 # observations, which would substantially slow things down, I took a subset
