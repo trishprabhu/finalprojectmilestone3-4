@@ -12,7 +12,7 @@
 # Figure out how to read in the other R scripts (not working... -- need Dan's
 # help).
 # Figure out to make the variable names professional throughout the project
-# (still need to do).
+# (done).
 # Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
 # (still need to do; low priority).
 # Solidify interpretation of histogram on "Tweet Analysis" page (still need
@@ -269,6 +269,12 @@ ui <- navbarPage(
                                "Swedish"),
                    multiple = FALSE,
                    selected = "English"),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
                  selectInput(inputId = "hist",
                              label = "Choose a candidate:",
                              choices = c("Hillary Clinton", 
@@ -661,13 +667,15 @@ output$cloud <- renderWordcloud2({
   histInput <- reactive({
   switch(input$hist,
          
-         "Hillary Clinton" = hillary_sentiment_scores,
-         "Donald Trump" = trump_sentiment_scores)
+         "Hillary Clinton" = hillarytweets$text,
+         "Donald Trump" = trumptweets$text[1:100])
    })
 
    output$char <- renderPlot({
      
-     characterhist <- input$hist %>%
+     histdataset <- histInput()
+     
+     characterhist <- histdataset %>%
        ggplot(aes(x = str_length(text))) +
        geom_histogram(binwidth = 20,
                       color = "white",
