@@ -1,25 +1,28 @@
 
-# Things To Do:
+# Completed:
 
-# Include interactions in Model (partially complete; need to understand what
-# it means -- interpret?).
+# Include interactions in Model (done).
 # Include confidence intervals (done)!
 # Create readability scores for each of the Tweets; do Tweet analysis (done!) 
 # and add to model (done).
 # Change first page to include Tweet and sentiment score; try to make it look
 # cool (done)!
 # Figure out how to get the desired # of digits in the gt table (done!).
-# Figure out how to read in the other R scripts (not working... -- need Dan's
-# help).
 # Figure out to make the variable names professional throughout the project
 # (done).
 # Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
 # (still need to do; low priority).
-# Solidify interpretation of histogram on "Tweet Analysis" page (still need
-# to do).
+# Solidify interpretation of histogram on "Tweet Analysis" page (done).
 # Create separate "Readability" page (done)!.
 # Create a Word Cloud (done)!
-# Improve graph for the visualization section (still need to do)!
+# Improve graph for the visualization section (done)!
+
+# Things To Do:
+
+# Figure out how to read in the other R scripts (not working... -- need Dan's
+# help).
+# Interpret the statistical model (2 predictors; 1 interaction) under the 
+# "Models" tab (need Dan's help).
 
 
 # Download relevant libraries, including the sentimentr library, so I can
@@ -277,7 +280,17 @@ ui <- navbarPage(
              mainPanel(plotOutput(outputId = "char"))),
     tabPanel("Discussion",
              titlePanel("Interpreting the Model"),
-             p(""),
+             p("This analysis refers to the Interactive Regression Results
+               displayed on the Models page."),
+             p("Approval Rating"),
+             p("The first model regresses Trump's daily Twitter sentiment scores 
+             on his associated daily approval ratings. The median of the 
+             Intercept, -0.554, suggests that at a hypothetical approval rating 
+             of 0, Trump's average sentiment score would be quite negative, at 
+             -0.554. It is important to note: the standard error associated with 
+             this value  suggests that the 95% Confidence Interval is 
+             (-1.17, 0.06), meaning that the true value could be positive, but 
+             even so, barely positive. "),
              titlePanel("About The Data"),
              p(""), 
              a("See the data currently in use by visiting this Dropbox link.",
