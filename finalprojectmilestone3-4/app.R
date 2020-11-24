@@ -13,9 +13,9 @@
 # Save subset of data/commit to GitHub (write.csv(objectname, "pathway.csv"))
 # (still need to do; low priority).
 # Solidify interpretation of histogram on "Tweet Analysis" page (done).
-# Create separate "Readability" page (done)!.
+# Create separate "Visualization" page (done!).
 # Create a Word Cloud (done)!
-# Improve graph for the visualization section (done)!
+# Improve Character Count graph for the "Visualization" page (done)!
 
 # Things To Do:
 
