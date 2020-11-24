@@ -75,10 +75,10 @@ dataframe_options <-
 library(shinythemes)
 
 ui <- navbarPage(
-  "Trisha's Final Project Milestones",
+  "Analyzing @realDonaldTrump",
   tabPanel("Tweet Analysis",
            fluidPage(theme = shinytheme("cerulean"),
-                     titlePanel("Sentiment Analysis: A Glimpse"),
+                     titlePanel("Sentiment Analysis: A Glimpse At The Data"),
                      sidebarLayout(
                        sidebarPanel(
                          selectInput(inputId = "dataset",
@@ -248,7 +248,6 @@ ui <- navbarPage(
              ),
     tabPanel("Visualization",
              titlePanel("Tweet Word Cloud"),
-             sidebarLayout(
                sidebarPanel(
                  radioButtons(
                    inputId = "source",
@@ -268,25 +267,14 @@ ui <- navbarPage(
                                "Norwegian", "Portuguese", "Russian", "Spanish", 
                                "Swedish"),
                    multiple = FALSE,
-                   selected = "English"),
-                 br(),
-                 br(),
-                 br(),
-                 br(),
-                 br(),
-                 br(),
-                 selectInput(inputId = "hist",
-                             label = "Choose a candidate:",
-                             choices = c("Hillary Clinton", 
-                                         "Donald Trump"))),
-             mainPanel(wordcloud2Output("cloud"),
-                       br(),
-                       br(),
-                       br(),
-                       br(),
-                       br(),
-                       br(),
-                       plotOutput(outputId = "char")))),
+                   selected = "English")),
+             mainPanel(wordcloud2Output("cloud")),
+               titlePanel("Character Count"),
+             sidebarPanel(selectInput(inputId = "hist",
+                                      label = "Choose a candidate:",
+                                      choices = c("Hillary Clinton", 
+                                                  "Donald Trump"))),
+             mainPanel(plotOutput(outputId = "char"))),
     tabPanel("Discussion",
              titlePanel("About The Data"),
              p("11/13 Status Report: This week, I began building the
@@ -683,16 +671,16 @@ output$cloud <- renderWordcloud2({
      
      characterhist <- histdataset %>%
        ggplot(aes(x = str_length(text))) +
-       geom_histogram(binwidth = 20,
+       geom_histogram(binwidth = 10,
                       color = "white",
                       fill = "darkslategray2") +
-       labs(title = "Character Count of Candidate's Tweets (09/12/20 - 10/13/20)",
+       labs(title = "Character Count of Candidate's Tweets",
             subtitle = "",
             x = "Character Count",
             y = "Frequency",
             caption = "Source: Trump Twitter Archive") +
-       xlim(0, 300) +
-       theme_classic()
+       xlim(0, 140) +
+       theme_economist_white()
      
      characterhist 
   
