@@ -151,7 +151,7 @@ ui <- navbarPage(
 #                                                                 width: 100%; 
 #                                                                 scrolling = yes", 
 #                                                       src = "finalgraph.pdf"))))
-    tabPanel("Model",
+    tabPanel("Models",
              titlePanel("How/why does Trump's sentiment on Twitter change?"),
              sidebarPanel(
              titlePanel("Approval Rating"),
@@ -167,6 +167,11 @@ ui <- navbarPage(
                      the relationship relatively weak, this is also a relatively 
                      short period of time; a longer period (like 1 year) -- with 
                      more datapoints -- would likely be more telling."),
+               br(),
+               br(),
+               br(),
+               br(),
+               br(),
                p("In this graph, we visualize the posterior distributions for
                  Trump's daily Twitter sentiment score in 3 hypothetical 
                  universes: one in which he has a 30% approval rating, one
@@ -182,10 +187,6 @@ ui <- navbarPage(
                  rather wide, so we wouldn't be surprised if the Trump with a 
                  30% approval rating had a positive daily Twitter sentiment 
                  score."),
-             br(),
-             br(),
-             br(),
-             br(),
              br(),
              br(),
              br(),
@@ -209,9 +210,9 @@ ui <- navbarPage(
               below."),
              br(),
              br(),
-             br(),
-             br(),
              titlePanel("Interactive Regression Results"),
+             p("See an interpretation of these results in the Discussion
+               tab."),
              selectInput(inputId = "regressiontable",
                          label = "Choose a variable:",
                          choices = c("Approval Rating", 
@@ -230,9 +231,8 @@ ui <- navbarPage(
                with sentiment; regression results confirm this. The
                visualization does pull out another trend, however; by only
                displaying the text for those Tweets below a certain length
-               of characters, it becomes clear that Trump tends to write
-               shorter Tweets when those Tweets are more positive. Clearly,
-               he doesn't like to brag!")),
+               of characters, it seems that Trump's shorter tweets (generally)
+               tend to be more positive. Clearly, he doesn't like to brag!")),
              mainPanel(
                plotOutput(outputId = "approvalSentiment"),
                plotOutput(outputId = "approvalPosterior"),
@@ -276,37 +276,10 @@ ui <- navbarPage(
                                                   "Donald Trump"))),
              mainPanel(plotOutput(outputId = "char"))),
     tabPanel("Discussion",
+             titlePanel("Interpreting the Model"),
+             p(""),
              titlePanel("About The Data"),
-             p("11/13 Status Report: This week, I began building the
-               Model portion of this project -- working off of the graph
-               I built last week (that looked at Donald Trump's daily
-               approval ratings/associated Twitter sentiment scores),
-               I created a regression model (with additional observations) 
-               to quantify/better understand that relationship. I also
-               found some new data -- on stock market volatility (specifically,
-               the S&P 500's daily opening/closing differences), which, after 
-               extensive wrangling/cleaning, I incorporated into my model 
-               (I also created a separate model regressing Trump's sentiment 
-               scores on the stock data). In doing all of this, I created 2 new
-               visualizations -- one looking at the posterior distributions
-               for Trump's daily Twitter sentiment score in 3 hypothetical 
-               universes (in each, he has different approval ratings), and
-               a geom_point ggplot looking at how, over a 1-month
-               period, the sentiment in Donald Trump's Tweets changed relative
-               to the S&P 500's opening/closing differences (there was a
-               very weak negative relationship). With regards to the data
-               in use, I'm still using Donald Trump's Tweets, from 
-               7/13/20 to 10/13/20 (source: the Trump Twitter Archive) and the
-               FiveThirtyEight Trump approval rating data; I'm also now using 
-               the CBOE Volatility Index's stock data. As always, all of this
-               data is in the Dropbox link below. Looking ahead, my big
-               goal for next week is to make everything in my app interactive,
-               as opposed to static (as it currently is). Ideally, I'd like
-               to combine a few of my visualizations by giving users the ability
-               to choose which they'd like to visualize, dynamically; I also 
-               want to create an interactive regression table, where users can 
-               regress Donald Trump's Twitter sentiment scores on the dependent 
-               variable of their choice."), 
+             p(""), 
              a("See the data currently in use by visiting this Dropbox link.",
                
 # At Dan's suggestion, I uploaded my datasets (which were large, and making it
@@ -319,12 +292,29 @@ ui <- navbarPage(
     tabPanel("About", 
              titlePanel("About"),
              h3("Project Background and Motivations"),
-             p("Hello! This is a project exploring Donald Trump's language,
-               and what it can tell us about his Presidency, politics,
-               and the world at large."),
+             p("This project aims to explore US President Donald 
+             Trump's Tweets in the months leading up to the 2020 General Election.
+             Unlike his predecessors, Trump has used social media extensively,
+             through which he reaches over 80 million followers on Twitter alone.
+             Given the influence his Tweets have had during his Presidency, 
+             I wanted to better understand what was driving his 
+             behavior (and specifically, his sentiment) on Twitter, and how those
+             patterns compared to those of his 2016 rival, Hillary Clinton.
+             My analysis rests on data sourced from the Trump Twitter Archive, 
+             an open-source database of several U.S. politicians' Tweets, as 
+             well as data from FiveThirtyEight and the CBOE Volatility Index."),
              h3("About Me"),
-             p("My name is Trisha Prabhu and I study Government, on
-             the Tech Science pathway. 
+             p("My name is Trisha Prabhu, and I'm a member of Harvard College's
+             Class of 2022. Originally from Naperville, Illinois, at Harvard,
+             I reside in Cabot House. I'm concentrating in Government, on
+             the Tech Science pathway, and pursuing a secondary in Economics. 
+             Within the broad field that is Government, I'm most passionate 
+             about understanding the impact the rise of technology has had on 
+             our society -- specifically, with regards to the way the digital 
+             economy has shaped issues like free speech and privacy -- and 
+             spearheading policy and work to address these challenges. You'll 
+             often find me utilizing data science and quantitative research 
+             methods to dig into this work.
              You can reach me at trishaprabhu@college.harvard.edu."),
              a("Visit the GitHub repo for this project here.", 
     href = "https://github.com/trishprabhu/finalprojectmilestone3-4/tree/main")
@@ -680,7 +670,7 @@ output$cloud <- renderWordcloud2({
             y = "Frequency",
             caption = "Source: Trump Twitter Archive") +
        xlim(0, 140) +
-       theme_economist_white()
+       theme_minimal()
      
      characterhist 
   
