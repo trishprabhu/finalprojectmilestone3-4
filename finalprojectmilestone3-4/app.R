@@ -26,7 +26,7 @@
 # Change the repo name -- make it informative.
 # Set your Shiny App such that it defaults to either the "Models" or 
 # "Visualizations" page.
-# 
+# Replace Character Count histogram with "keyness" visualization.
 
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
