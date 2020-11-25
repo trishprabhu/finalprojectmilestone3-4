@@ -23,7 +23,10 @@
 # help).
 # Interpret the statistical model (2 predictors; 1 interaction) under the 
 # "Models" tab (need Dan's help).
-
+# Change the repo name -- make it informative.
+# Set your Shiny App such that it defaults to either the "Models" or 
+# "Visualizations" page.
+# 
 
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
@@ -652,7 +655,6 @@ create_wordcloud <- function(data, num_words = 100, background = "white") {
   wordcloud2(data, backgroundColor = background)
   
   }
-
 
 output$cloud <- renderWordcloud2({
   create_wordcloud(data_source(),
