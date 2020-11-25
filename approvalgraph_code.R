@@ -110,12 +110,12 @@ results
 # Add the results vector to finalgraphtib.
 
 finalgraphtib <- graphtib2 %>%
-  mutate(approval_ratings = results/100)
+  mutate(approval_ratings = results)
 
 # Use ggplot to create our graph (FINALLY)!
 
 finalgraph <- finalgraphtib %>%
-  ggplot(aes(x = approval_ratings, y = meanofmeans)) +
+  ggplot(aes(x = approval_ratings/100, y = meanofmeans)) +
   geom_point() +
   geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
   labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/12 - 10/13",
@@ -176,5 +176,5 @@ nicetib %>%
 
 # Write RDS.
 
-# write_rds(finalgraphtib, "finalgraphtib_code.rds")
-# write_rds(tweetib1, "tweetib1_code.rds")
+write_rds(finalgraphtib, "finalgraph.rds")
+write_rds(tweetib1, "tweetib1.rds")

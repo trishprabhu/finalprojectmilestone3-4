@@ -53,9 +53,9 @@ library(ggrepel)
 
 # Save the needed tibbles from the R scripts as rds's.
 
-# finalstocktib <- read_rds("finalstocktib_code.rds")
-# finalgraphtib <- read_rds("finalgraphtib_code.rds")
-# tweetib1 <- read_rds("tweetib1_code.rds")
+finalstocktib <- read_rds("finalstock.rds")
+finalgraphtib <- read_rds("finalgraph.rds")
+tweetib1 <- read_rds("tweetib1.rds")
 
 # Reading in the data.
 
@@ -447,7 +447,7 @@ server <- function(input, output) {
 # troubleshooting.
         
         finalgraphtib %>%
-            ggplot(aes(x = approval_ratings, y = meanofmeans)) +
+            ggplot(aes(x = approval_ratings/100, y = meanofmeans)) +
             geom_point() +
             geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
             

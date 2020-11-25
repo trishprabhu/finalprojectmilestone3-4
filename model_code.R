@@ -302,4 +302,4 @@ characterhist
 
 # Write RDS.
 
-# write_rds(finalstocktib, "finalstocktib_code.rds")
+write_rds(finalstocktib, "finalstock.rds")
