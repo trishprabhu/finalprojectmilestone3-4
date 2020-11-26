@@ -19,14 +19,14 @@
 
 # Things To Do:
 
-# Figure out how to read in the other R scripts (not working... -- need Dan's
+# Figure out how to read in the other R scripts (in progress -- need Dan's
 # help).
 # Interpret the statistical model (2 predictors; 1 interaction) under the 
-# "Models" tab (need Dan's help).
+# "Models" tab (in progress; check work with Dan).
 # Change the repo name -- make it informative.
 # Set your Shiny App such that it defaults to either the "Models" or 
 # "Visualizations" page.
-# Replace Character Count histogram with "keyness" visualization.
+# Potentially replace Character Count histogram with "keyness" visualization.
 
 # Download relevant libraries, including the sentimentr library, so I can
 # complete sentiment analysis!
@@ -329,7 +329,10 @@ ui <- navbarPage(
              p("What if we create a model that looks at approval rating, stock 
                market opening/closing differences, and their interaction?
                Could we improve the power of our model?"), 
-             p(""), 
+             p("This is exactly what the last model aims to do, regressing
+               Trump's daily Twitter sentiment scores on his associated daily
+               approval ratings, the associated daily stock market opening/
+               closing differences, and their interaction. "), 
              titlePanel("About The Data"),
              p(""), 
              a("See the data currently in use by visiting this Dropbox link.",
