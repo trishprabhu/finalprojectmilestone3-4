@@ -176,5 +176,5 @@ nicetib %>%
 
 # Write RDS.
 
-# write_rds(finalgraphtib, "finalgraph.rds")
-# write_rds(tweetib1, "tweetib1.rds")
+write_rds(finalgraphtib, "finalgraph.rds")
+write_rds(tweetib1, "tweetib1.rds")

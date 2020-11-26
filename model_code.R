@@ -302,7 +302,7 @@ characterhist
 
 # Write RDS.
 
-# write_rds(finalstocktib, "finalstock.rds")
-# write_rds(pp, "pp.rds")
+write_rds(finalstocktib, "finalstock.rds")
+write_rds(pp, "pp.rds")
 
 
