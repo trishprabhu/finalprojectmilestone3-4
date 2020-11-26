@@ -326,12 +326,11 @@ ui <- navbarPage(
              then, take these findings with a grain of salt."),
              tags$b(p("Interaction")),
              p("What if we create a model that looks at approval rating, stock 
-               market opening/closing differences, and their interaction?
-               Could we improve the power of our model?"), 
+               market opening/closing differences, and their interaction?"), 
              p("This is exactly what the last model aims to do, regressing
                Trump's daily Twitter sentiment scores on his associated daily
                approval ratings, the associated daily stock market opening/
-               closing differences, and their interaction. "), 
+               closing differences, and their interaction."), 
              titlePanel("About The Data"),
              p(""), 
              a("See the data currently in use by visiting this Dropbox link.",
