@@ -16,11 +16,10 @@
 # Create separate "Visualization" page (done!).
 # Create a Word Cloud (done)!
 # Improve Character Count graph for the "Visualization" page (done)!
+# Figure out how to read in the other R scripts (done!).
 
 # Things To Do:
 
-# Figure out how to read in the other R scripts (in progress -- need Dan's
-# help).
 # Interpret the statistical model (2 predictors; 1 interaction) under the 
 # "Models" tab (in progress; check work with Dan).
 # Change the repo name -- make it informative.
@@ -53,10 +52,10 @@ library(ggrepel)
 
 # Save the needed tibbles from the R scripts as rds's.
 
-# finalstocktib <- read_rds("finalstock.rds")
-# finalgraphtib <- read_rds("finalgraph.rds")
-# tweetib1 <- read_rds("tweetib1.rds")
-# pp <- read_rds("pp.rds")
+finalstocktib <- read_rds("finalstock.rds")
+finalgraphtib <- read_rds("finalgraph.rds")
+tweetib1 <- read_rds("tweetib1.rds")
+pp <- read_rds("pp.rds")
 
 # Reading in the data.
 
