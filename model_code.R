@@ -30,7 +30,7 @@ fit_obj %>%
 # What sentiment score would we expect on 3 different days, with Donald Trump's
 # approval rating at 30%, 45%, and 60%, respectively?
 
-new <- tibble(approval_ratings = c(0.30, 0.45, 0.60))
+new <- tibble(approval_ratings = c(30, 45, 60))
 
 set.seed(27)
 pp <- posterior_predict(fit_obj, newdata = new) %>%
@@ -302,4 +302,7 @@ characterhist
 
 # Write RDS.
 
-write_rds(finalstocktib, "finalstock.rds")
+# write_rds(finalstocktib, "finalstock.rds")
+# write_rds(pp, "pp.rds")
+
+

@@ -53,9 +53,10 @@ library(ggrepel)
 
 # Save the needed tibbles from the R scripts as rds's.
 
-finalstocktib <- read_rds("finalstock.rds")
-finalgraphtib <- read_rds("finalgraph.rds")
-tweetib1 <- read_rds("tweetib1.rds")
+# finalstocktib <- read_rds("finalstock.rds")
+# finalgraphtib <- read_rds("finalgraph.rds")
+# tweetib1 <- read_rds("tweetib1.rds")
+# pp <- read_rds("pp.rds")
 
 # Reading in the data.
 
@@ -285,15 +286,34 @@ ui <- navbarPage(
              titlePanel("Interpreting the Model"),
              p("This analysis refers to the Interactive Regression Results
                displayed on the Models page."),
-             p("Approval Rating"),
+             tags$b(p("Approval Rating")),
              p("The first model regresses Trump's daily Twitter sentiment scores 
              on his associated daily approval ratings. The median of the 
              Intercept, -0.554, suggests that at a hypothetical approval rating 
-             of 0, Trump's average sentiment score would be quite negative, at 
-             -0.554. It is important to note: the standard error associated with 
+             of 0, Trump's average sentiment score would be quite negative.
+             It is important to note: the standard error associated with 
              this value  suggests that the 95% Confidence Interval is 
              (-1.17, 0.06), meaning that the true value could be positive, but 
-             even so, barely positive. "),
+             even so, barely positive. In other words, we can be fairly sure
+             - though not entirely sure -- that Trump would have a negative
+             daily Twitter sentiment score at an approval rating of 0 
+             (which, of course, makes sense!). The median of the coefficient
+             on the approval rating variable, 0.0138 suggests that on average,
+             a 1% increase in Trump's daily approval rating results in about a 
+             0.0138 increase in his daily Twitter sentiment score. In other
+             words, his popularity in the public is directly reflected in his
+             Tweets. Once again, the 95% Confidence Interval cautions us to
+             be wary; indeed, it suggests that the true value could be as
+             low as 0, or as as high as 0.02. In other words, we should far
+             from accept these findings as conclusive; they are not necessarily
+             significant."),
+             tags$b(p("Stock Market")),
+             p("The second model regresses Trump's daily Twitter sentiment scores 
+             on the daily stock market opening/closing differences (does big
+             jump or a big drop affect his sentiment on Twitter?). The median of 
+             the Intercept, 0.05, suggests that at a hypothetical difference
+             value of 0, Trump's average sentiment score would be neutral."),
+             tags$b(p("Interaction")),
              titlePanel("About The Data"),
              p(""), 
              a("See the data currently in use by visiting this Dropbox link.",
@@ -466,7 +486,7 @@ server <- function(input, output) {
     
     output$approvalPosterior <- renderPlot({
       
-      approvalratingdistribution <- pp %>% 
+      approvalratingdistribution <- pp %>%
         rename(`30` = `1`) %>% 
         rename(`45` = `2`) %>% 
         rename(`60` = `3`) %>% 
