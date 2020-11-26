@@ -292,28 +292,44 @@ ui <- navbarPage(
              Intercept, -0.554, suggests that at a hypothetical approval rating 
              of 0, Trump's average sentiment score would be quite negative.
              It is important to note: the standard error associated with 
-             this value  suggests that the 95% Confidence Interval is 
+             this value  suggests that the 95% confidence interval is 
              (-1.17, 0.06), meaning that the true value could be positive, but 
              even so, barely positive. In other words, we can be fairly sure
-             - though not entirely sure -- that Trump would have a negative
+             -- though not entirely sure -- that Trump would have a negative
              daily Twitter sentiment score at an approval rating of 0 
              (which, of course, makes sense!). The median of the coefficient
-             on the approval rating variable, 0.0138 suggests that on average,
+             on the approval rating variable, 0.0138, suggests that on average,
              a 1% increase in Trump's daily approval rating results in about a 
              0.0138 increase in his daily Twitter sentiment score. In other
              words, his popularity in the public is directly reflected in his
-             Tweets. Once again, the 95% Confidence Interval cautions us to
+             Tweets. Once again, the 95% confidence interval cautions us to
              be wary; indeed, it suggests that the true value could be as
-             low as 0, or as as high as 0.02. In other words, we should far
-             from accept these findings as conclusive; they are not necessarily
-             significant."),
+             low as 0, or as as high as 0.02. We should far from accept these 
+             findings as conclusive; they are not necessarily significant."),
              tags$b(p("Stock Market")),
              p("The second model regresses Trump's daily Twitter sentiment scores 
-             on the daily stock market opening/closing differences (does big
+             on daily stock market opening/closing differences (does a big
              jump or a big drop affect his sentiment on Twitter?). The median of 
              the Intercept, 0.05, suggests that at a hypothetical difference
-             value of 0, Trump's average sentiment score would be neutral."),
+             value of 0, Trump's average sentiment score would be neutral.
+             Though relatively high, the Intercept's standard error value and its
+             resulting 95% confidence interval -- (0.015, 0.086) -- ultimately leads
+             us to the same conclusion. The median of the coefficient, -0.003, 
+             suggests that, on average, a 1 unit increase in the stock market's 
+             opening/closing difference results in a close to negligible dip in 
+             Trump's daily Twitter sentiment score. In other words, it seems that 
+             the stock market's changes are not a particularly powerful predictor 
+             of Trump's sentiment. This is, once again, qualified by the 
+             standard error/confidence interval. The standard error is very
+             high -- 0.014 -- producing a wide confidence interval of (-0.032,
+             0.027). It's clear, then, that the true value could in fact suggest
+             an important relationship between these two variables. We should,
+             then, take these findings with a grain of salt."),
              tags$b(p("Interaction")),
+             p("What if we create a model that looks at approval rating, stock 
+               market opening/closing differences, and their interaction?
+               Could we improve the power of our model?"), 
+             p(""), 
              titlePanel("About The Data"),
              p(""), 
              a("See the data currently in use by visiting this Dropbox link.",
