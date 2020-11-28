@@ -50,12 +50,13 @@ library(gtsummary)
 library(broom.mixed)
 library(ggrepel)
 
-# Save the needed tibbles from the R scripts as rds's.
+# Save the needed tibbles from the R scripts as rds's. 
+# Only need to do once, at end!
 
-finalstocktib <- read_rds("finalstock.rds")
-finalgraphtib <- read_rds("finalgraph.rds")
-tweetib1 <- read_rds("tweetib1.rds")
-pp <- read_rds("pp.rds")
+# finalstocktib <- read_rds("finalstock.rds")
+# finalgraphtib <- read_rds("finalgraph.rds")
+# tweetib1 <- read_rds("tweetib1.rds")
+# pp <- read_rds("pp.rds")
 
 # Reading in the data.
 
@@ -81,7 +82,7 @@ dataframe_options <-
 library(shinythemes)
 
 ui <- navbarPage(
-  "Analyzing @realDonaldTrump",
+  "Analyzing @realDonaldTrump: A Deep Dive Into Donald Trump's Tweets",
   tabPanel("Tweet Analysis",
            fluidPage(theme = shinytheme("cerulean"),
                      titlePanel("Sentiment Analysis: A Glimpse At The Data"),

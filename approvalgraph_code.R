@@ -174,7 +174,7 @@ nicetib %>%
       rows = Sentiment < 0)
   )
 
-# Write RDS.
+# Write RDS. Only need to do once, at end!
 
-write_rds(finalgraphtib, "finalgraph.rds")
-write_rds(tweetib1, "tweetib1.rds")
+# write_rds(finalgraphtib, "finalgraph.rds")
+# write_rds(tweetib1, "tweetib1.rds")
