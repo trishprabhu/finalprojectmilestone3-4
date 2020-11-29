@@ -191,7 +191,7 @@ print(stock_obj, view = FALSE, digits = 5)
 stockgraph <- finalstocktib %>%
   ggplot(aes(x = range, y = meanofmeans)) +
   geom_point() +
-  geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+  geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
   labs(title = "Stock opening/closing differences and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
        subtitle = "The S&P 500's opening/closing differences and Trump's 
        sentiment scores seem to be very, very weakly negatively correlated",
