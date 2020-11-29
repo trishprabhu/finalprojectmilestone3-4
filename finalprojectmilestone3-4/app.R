@@ -22,6 +22,7 @@
 
 # Higher Priority:
 
+# Troubleshoot approvalSentiment graph bug.
 # Interpret the statistical models under the "Models" tab (need help with 
 # interaction; check work (e.g. Model #2 interpretation) with Dan).
 # Change the repo name -- make it informative.
