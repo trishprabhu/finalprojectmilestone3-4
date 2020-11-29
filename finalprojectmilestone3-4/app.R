@@ -335,8 +335,8 @@ ui <- navbarPage(
                market opening/closing differences, and their interaction?"), 
              p("This is exactly what the last model aims to do, regressing
                Trump's daily Twitter sentiment scores on his associated daily
-               approval ratings, the associated daily stock market opening/
-               closing differences, and their interaction."), 
+               approval ratings, the associated daily stock market 
+               opening/closing differences, and their interaction."), 
              p("The median of the Intercept, -0.494, suggests that at a 
                hypothetical approval rating of 0% and a hypothetical stock
                opening/closing difference of 0, Trump's average sentiment
@@ -506,6 +506,7 @@ server <- function(input, output) {
     
     
     output$approvalSentiment <- renderPlot({
+      
       finalgraphtib %>%
             ggplot(aes(x = (approval_ratings/100), y = meanofmeans)) +
             geom_point() +
