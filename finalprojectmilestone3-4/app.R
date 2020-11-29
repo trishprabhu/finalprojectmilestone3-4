@@ -20,12 +20,16 @@
 
 # Things To Do:
 
-# Interpret the statistical model (2 predictors; 1 interaction) under the 
-# "Models" tab (in progress; check work with Dan).
+# Higher Priority:
 
+# Interpret the statistical models under the "Models" tab (need help with 
+# interaction; check work (e.g. Model #2 interpretation) with Dan).
 # Change the repo name -- make it informative.
 # Set your Shiny App such that it defaults to either the "Models" or 
 # "Visualizations" page.
+
+# Lower Priority:
+
 # Potentially replace Character Count histogram with "keyness" visualization.
 
 # Download relevant libraries, including the sentimentr library, so I can
@@ -333,6 +337,30 @@ ui <- navbarPage(
                Trump's daily Twitter sentiment scores on his associated daily
                approval ratings, the associated daily stock market opening/
                closing differences, and their interaction."), 
+             p("The median of the Intercept, -0.494, suggests that at a 
+               hypothetical approval rating of 0% and a hypothetical stock
+               opening/closing difference of 0, Trump's average sentiment
+               score would be relatively negative; this should, however, be taken
+               with a grain of salt, given the high standard error value (0.334).
+               This ultimately implies a 95% confidence interval of 
+               (-1.162, 0.174) -- so the true value could, in fact, represent 
+               a positive sentiment score. (This is similar to the Intercept
+               we saw in the first model.) The median of the coefficient on
+               the approval rating variable suggests that at a hypothetical
+               stock difference value of 0, on average, a 1% increase in Trump's 
+               daily approval rating results in about a 0.0125 increase in his 
+               daily Twitter sentiment score -- a value similar to the first
+               model, but slightly lower. A larger standard error value here
+               suggests that the true value could be as low as -0.003 or as
+               high as 0.003. The median of the coefficient on the range
+               variable suggests that at a hypothetical approval rating of
+               0%, on average, a 1 unit increase in the stock market's 
+             opening/closing difference results in 0.045 increase in Trump's
+             daily Twitter sentiment score. This is quite different from the
+             second model, which implied a neglible dip. In any case, once again,
+             a large standard error value keeps us from striking gold; with a
+               95% confidence interval of (-0.228, 0.318), the true value could be 
+               neglible or a robust increase/decrease."), 
              titlePanel("About The Data"),
              p(""), 
              a("See the data currently in use by visiting this Dropbox link.",
