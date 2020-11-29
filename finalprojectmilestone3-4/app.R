@@ -22,6 +22,7 @@
 
 # Interpret the statistical model (2 predictors; 1 interaction) under the 
 # "Models" tab (in progress; check work with Dan).
+
 # Change the repo name -- make it informative.
 # Set your Shiny App such that it defaults to either the "Models" or 
 # "Visualizations" page.
@@ -53,10 +54,10 @@ library(ggrepel)
 # Save the needed tibbles from the R scripts as rds's. 
 # Only need to do once, at end!
 
-# finalstocktib <- read_rds("finalstock.rds")
-# finalgraphtib <- read_rds("finalgraph.rds")
-# tweetib1 <- read_rds("tweetib1.rds")
-# pp <- read_rds("pp.rds")
+finalstocktib <- read_rds("finalstock.rds")
+finalgraphtib <- read_rds("finalgraph.rds")
+tweetib1 <- read_rds("tweetib1.rds")
+pp <- read_rds("pp.rds")
 
 # Reading in the data.
 
@@ -477,15 +478,8 @@ server <- function(input, output) {
     
     
     output$approvalSentiment <- renderPlot({
-        
-# I didn't know this, but because "approvalgraph_code.R" is in the same folder 
-# as this app, I can use objects/functions defined in that R script here! 
-# Super handy. Update: unfortunately, I need to read the R script in to this
-# App in order for the graph below to render in my published ShinyApp. Currently
-# troubleshooting.
-        
-        finalgraphtib %>%
-            ggplot(aes(x = approval_ratings/100, y = meanofmeans)) +
+      finalgraphtib %>%
+            ggplot(aes(x = (approval_ratings/100), y = meanofmeans)) +
             geom_point() +
             geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
             

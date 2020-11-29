@@ -117,7 +117,7 @@ finalgraphtib <- graphtib2 %>%
 finalgraph <- finalgraphtib %>%
   ggplot(aes(x = approval_ratings/100, y = meanofmeans)) +
   geom_point() +
-  geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+  geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
   labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/12 - 10/13",
        subtitle = "Trump's approval ratings and sentiment scores seem to be weakly positively correlated",
        x = "Approval Rating",
@@ -176,5 +176,5 @@ nicetib %>%
 
 # Write RDS. Only need to do once, at end!
 
-# write_rds(finalgraphtib, "finalgraph.rds")
-# write_rds(tweetib1, "tweetib1.rds")
+write_rds(finalgraphtib, "finalgraph.rds")
+write_rds(tweetib1, "tweetib1.rds")
