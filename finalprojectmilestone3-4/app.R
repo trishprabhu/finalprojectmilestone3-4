@@ -146,7 +146,7 @@ ui <- navbarPage(
                       br(),
                       br(),
                       br(),
-                       plotOutput(outputId = "bothPlot"),
+                      # plotOutput(outputId = "bothPlot"),
                        
                        sliderInput("bins", 
                                    "Set the number of bins:",
@@ -457,7 +457,7 @@ server <- function(input, output) {
       candidate <- candidateInput()
       candidate %>%
             ggplot(aes(x = sentiment)) +
-            geom_histogram(bins = input$bins, 
+            geom_histogram(bins = input$bins,
                            color = "white",
                            fill = "dodgerblue") +
             labs(x = "Sentiment Score",
@@ -465,17 +465,17 @@ server <- function(input, output) {
                  subtitle = "Overall, Hillary is very neutral in her Tweets; Trump is too, but with more variation",
                  title = "Sentiment Expressed In Tweets",
                  caption = "Source: Trump Twitter Archive") +
-            
-# I thought that explicitly graphing the mean of both Trump and Clinton's 
+
+# I thought that explicitly graphing the mean of both Trump and Clinton's
 # sentiment scores could help viewers better visualize the distribution overall
 # (I also thought it was interesting that, on average, they are both very
 # neutral -- likely a result of Trump's more positive Tweets "canceling out"
 # his more negative Tweets).
-            
-            geom_vline(xintercept = mean(candidate$sentiment), 
+
+            geom_vline(xintercept = mean(candidate$sentiment),
                        linetype = "dashed") +
             theme_classic()
-        
+
     })
     
 #    donsentimentmean <- mean(trump_sentiment_scores$sentiment)
@@ -508,15 +508,15 @@ server <- function(input, output) {
     
     
     output$approvalSentiment <- renderPlot({
-      
+
       finalgraphtib %>%
             ggplot(aes(x = (approval_ratings/100), y = meanofmeans)) +
             geom_point() +
             geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
-            
+
 # I know that the lines below surpasses the 80 character limit, but cutting them
 # off was not aesthetically appealing on my graph. Apologies!
-            
+
             labs(title = "Trump's daily approval ratings and sentiment scores on Twitter, 09/12 - 10/13",
                  subtitle = "Trump's approval ratings and sentiment scores seem to be weakly positively correlated",
                  x = "Approval Rating",
@@ -524,20 +524,20 @@ server <- function(input, output) {
                  caption = "Source: Trump Twitter Archive") +
             scale_x_continuous(labels = scales::percent_format()) +
             theme_bw()
-        
+
     })
-    
+
     output$approvalPosterior <- renderPlot({
-      
+
       approvalratingdistribution <- pp %>%
-        rename(`30` = `1`) %>% 
-        rename(`45` = `2`) %>% 
-        rename(`60` = `3`) %>% 
+        rename(`30` = `1`) %>%
+        rename(`45` = `2`) %>%
+        rename(`60` = `3`) %>%
         pivot_longer(cols = `30`:`60`,
                      names_to = "parameter",
                      values_to = "score") %>%
         ggplot(aes(x = score, fill = parameter)) +
-        geom_histogram(aes(y = after_stat(count/sum(count))), 
+        geom_histogram(aes(y = after_stat(count/sum(count))),
                        alpha = 0.7,
                        bins = 100,
                        color = "white",
@@ -551,30 +551,30 @@ server <- function(input, output) {
         scale_fill_manual(name = "Approval Rating (%)",
                           values = c("dodgerblue", "salmon", "green")) +
         theme_bw()
-      
+
       approvalratingdistribution
-    
+
     })
     
     output$stockSentiment <- renderPlot({
-      
+
       stockgraph <- finalstocktib %>%
         ggplot(aes(x = range, y = meanofmeans)) +
         geom_point() +
         geom_smooth(formula = y ~ x, method = "lm", se = TRUE) +
-        
+
 # I know that the lines below surpasses the 80 character limit, but cutting them
 # off was not aesthetically appealing on my graph. Apologies!
-        
+
         labs(title = "Stock opening/closing differences and Trump's daily sentiment scores on Twitter, 09/12 - 10/13",
              subtitle = "The S&P 500's opening/closing differences and Trump's sentiment scores seem to be very, very weakly negatively correlated",
              x = "Difference",
              y = "Sentiment Score",
              caption = "Source: Trump Twitter Archive; CBOE Volatility Index") +
         theme_bw()
-      
+
       stockgraph
-      
+
     })
     
     regressiontableInput <- reactive({
