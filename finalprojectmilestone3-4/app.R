@@ -28,6 +28,7 @@
 # Change the repo name -- make it informative.
 # Set your Shiny App such that it defaults to either the "Models" or 
 # "Visualizations" page.
+# Ensure code meets Style Guide requirements.
 
 # Lower Priority:
 
